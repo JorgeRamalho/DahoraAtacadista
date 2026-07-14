@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Cadastro Dahora Card · Dahora</title>
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <div class="layout">
+      <a class="skip-link" href="#conteudo">Ir para o conteúdo</a>
+      <header class="site-header">
+        <div class="container header-inner">
+          <a class="logo" href="index.html">
+            <span class="logo-mark">DH</span>
+            <span class="logo-text"><strong>Dahora</strong><span>Atacadista</span></span>
+          </a>
+          <nav class="nav-desktop" aria-label="Principal">
+            <a href="index.html">Início</a>
+            <a href="dahora-card.html">Dahora Card</a>
+            <a href="faq.html">FAQ</a>
+            <a href="tire-sua-duvida.html">Tire sua dúvida</a>
+            <a href="sac.html">SAC 24h</a>
+            <a href="area-cliente.html">Área do Cliente</a>
+          </nav>
+          <div class="header-actions">
+            <a class="btn btn-secondary" href="area-cliente.html">Entrar</a>
+            <a class="btn btn-primary" href="cadastro.html">Pedir cartão</a>
+          </div>
+          <button class="menu-toggle" type="button" data-menu-toggle aria-expanded="false" aria-controls="menu-mobile">☰</button>
+        </div>
+        <div class="nav-mobile" id="menu-mobile" data-menu-panel>
+          <div class="container">
+            <a href="index.html">Início</a>
+            <a href="cadastro.html">Cadastro</a>
+            <a href="area-cliente.html">Área do Cliente</a>
+            <div class="mobile-actions">
+              <a class="btn btn-primary" href="cadastro.html">Pedir cartão</a>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <main id="conteudo">
+        <section class="page-hero">
+          <div class="container">
+            <p class="eyebrow">Solicitação</p>
+            <h1>Cadastro do Dahora Card</h1>
+            <p>
+              Informe seus dados pessoais, endereço e crie a senha de acesso. Os dados
+              alimentam o banco da Área do Cliente.
+            </p>
+          </div>
+        </section>
+
+        <section class="section" style="padding-top: 2.5rem">
+          <div class="container max-form">
+            <div class="surface text-center" data-success-cadastro hidden>
+              <p style="font-size: 2rem; color: var(--dahora-forest)">✓</p>
+              <h2>Cadastro concluído, <span data-client-name></span>!</h2>
+              <p class="muted mt-2">Seu Dahora Card digital já está ativo. Número:</p>
+              <p class="mt-2" style="font-family: ui-monospace, monospace; font-size: 1.25rem; font-weight: 700; color: var(--dahora-forest)" data-card-number></p>
+              <a class="btn btn-primary mt-3" href="area-cliente.html">Ir para Área do Cliente</a>
+            </div>
+
+            <form class="surface" data-form="cadastro" novalidate>
+              <fieldset class="fieldset">
+                <legend>Dados pessoais</legend>
+                <div class="form-grid two">
+                  <div class="field full">
+                    <label for="nomeCompleto">Nome completo</label>
+                    <input id="nomeCompleto" name="nomeCompleto" required autocomplete="name" />
+                  </div>
+                  <div class="field">
+                    <label for="cpf">CPF</label>
+                    <input id="cpf" name="cpf" data-mask="cpf" inputmode="numeric" placeholder="000.000.000-00" required />
+                  </div>
+                  <div class="field">
+                    <label for="dataNascimento">Data de nascimento</label>
+                    <input id="dataNascimento" name="dataNascimento" type="date" required />
+                  </div>
+                  <div class="field">
+                    <label for="email">E-mail</label>
+                    <input id="email" name="email" type="email" required autocomplete="email" />
+                  </div>
+                  <div class="field">
+                    <label for="telefone">Telefone / WhatsApp</label>
+                    <input id="telefone" name="telefone" data-mask="phone" inputmode="tel" placeholder="(00) 00000-0000" required />
+                  </div>
+                </div>
+              </fieldset>
+
+              <fieldset class="fieldset">
+                <legend>Endereço</legend>
+                <div class="form-grid two">
+                  <div class="field">
+                    <label for="cep">CEP</label>
+                    <input id="cep" name="cep" data-mask="cep" inputmode="numeric" placeholder="00000-000" required />
+                  </div>
+                  <div class="field">
+                    <label for="endereco">Endereço</label>
+                    <input id="endereco" name="endereco" required />
+                  </div>
+                  <div class="field">
+                    <label for="numero">Número</label>
+                    <input id="numero" name="numero" required />
+                  </div>
+                  <div class="field">
+                    <label for="complemento">Complemento</label>
+                    <input id="complemento" name="complemento" />
+                  </div>
+                  <div class="field">
+                    <label for="bairro">Bairro</label>
+                    <input id="bairro" name="bairro" required />
+                  </div>
+                  <div class="field">
+                    <label for="cidade">Cidade</label>
+                    <input id="cidade" name="cidade" required />
+                  </div>
+                  <div class="field">
+                    <label for="estado">UF</label>
+                    <select id="estado" name="estado" required>
+                      <option value="">—</option>
+                      <option>AC</option><option>AL</option><option>AP</option><option>AM</option>
+                      <option>BA</option><option>CE</option><option>DF</option><option>ES</option>
+                      <option>GO</option><option>MA</option><option>MT</option><option>MS</option>
+                      <option>MG</option><option>PA</option><option>PB</option><option>PR</option>
+                      <option>PE</option><option>PI</option><option>RJ</option><option>RN</option>
+                      <option>RS</option><option>RO</option><option>RR</option><option>SC</option>
+                      <option>SP</option><option>SE</option><option>TO</option>
+                    </select>
+                  </div>
+                </div>
+              </fieldset>
+
+              <fieldset class="fieldset">
+                <legend>Acesso à Área do Cliente</legend>
+                <div class="form-grid two">
+                  <div class="field">
+                    <label for="senha">Senha</label>
+                    <input id="senha" name="senha" type="password" minlength="6" required autocomplete="new-password" />
+                  </div>
+                  <div class="field">
+                    <label for="confirmarSenha">Confirmar senha</label>
+                    <input id="confirmarSenha" name="confirmarSenha" type="password" minlength="6" required autocomplete="new-password" />
+                  </div>
+                </div>
+              </fieldset>
+
+              <label class="check mb-2">
+                <input type="checkbox" name="aceiteTermos" required />
+                <span>Li e aceito o tratamento dos meus dados pessoais conforme a LGPD para emissão do Dahora Card.</span>
+              </label>
+
+              <p class="alert alert-error" data-alert hidden></p>
+              <button class="btn btn-primary" type="submit">Concluir cadastro do Dahora Card</button>
+            </form>
+          </div>
+        </section>
+      </main>
+
+      <footer class="site-footer">
+        <div class="container footer-bottom">
+          <p>© <span data-year></span> Dahora Atacadista</p>
+          <p><a href="index.html">Voltar ao início</a></p>
+        </div>
+      </footer>
+    </div>
+    <script src="js/script.js"></script>
+  </body>
+</html>

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Área do Cliente · Dahora</title>
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <div class="layout">
+      <header class="site-header">
+        <div class="container header-inner">
+          <a class="logo" href="index.html">
+            <span class="logo-mark">DH</span>
+            <span class="logo-text"><strong>Dahora</strong><span>Atacadista</span></span>
+          </a>
+          <nav class="nav-desktop" aria-label="Principal">
+            <a href="index.html">Início</a>
+            <a href="cadastro.html">Cadastro</a>
+            <a href="area-cliente.html" aria-current="page">Área do Cliente</a>
+            <a href="sac.html">SAC 24h</a>
+          </nav>
+          <button class="menu-toggle" type="button" data-menu-toggle aria-expanded="false">☰</button>
+        </div>
+        <div class="nav-mobile" data-menu-panel>
+          <div class="container">
+            <a href="area-cliente.html">Área do Cliente</a>
+            <a href="cadastro.html">Cadastro</a>
+          </div>
+        </div>
+      </header>
+
+      <main>
+        <section class="page-hero">
+          <div class="container">
+            <p class="eyebrow">Acesso seguro</p>
+            <h1>Área do Cliente</h1>
+            <p>
+              Entre com o e-mail e a senha do cadastro do Dahora Card. O dashboard completo
+              com cartão e pontos fica em
+              <a href="http://localhost:3000/area-cliente" style="color:var(--dahora-forest);font-weight:600;text-decoration:underline">localhost:3000/area-cliente</a>
+              após o login.
+            </p>
+          </div>
+        </section>
+
+        <section class="section" style="padding-top:2.5rem">
+          <div class="container" style="max-width:28rem;margin-inline:auto">
+            <form class="surface" data-form="login" novalidate>
+              <div class="field mb-2">
+                <label for="email">E-mail</label>
+                <input id="email" name="email" type="email" required autocomplete="email" />
+              </div>
+              <div class="field mb-2">
+                <label for="senha">Senha</label>
+                <input id="senha" name="senha" type="password" required autocomplete="current-password" />
+              </div>
+              <p class="alert alert-error" data-alert hidden></p>
+              <button class="btn btn-primary btn-block" type="submit">Entrar na Área do Cliente</button>
+              <p class="text-center muted mt-2" style="font-size:0.9rem">
+                Ainda não tem cartão?
+                <a href="cadastro.html" style="color:var(--dahora-forest);font-weight:600">Cadastre-se</a>
+              </p>
+            </form>
+
+            <p class="text-center muted mt-3" style="font-size:0.85rem">
+              Versão React da Área do Cliente:
+              <a href="react/index.html" style="color:var(--dahora-forest);font-weight:600">frontend/react</a>
+            </p>
+          </div>
+        </section>
+      </main>
+
+      <footer class="site-footer">
+        <div class="container footer-bottom">
+          <p>© <span data-year></span> Dahora Atacadista</p>
+        </div>
+      </footer>
+    </div>
+    <script src="js/script.js"></script>
+  </body>
+</html>

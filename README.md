@@ -9,10 +9,10 @@ Aplicação web completa da rede **Dahora** — supermercados e atacado — com 
 | **Marca** | Dahora |
 | **Slogan** | Preço de verdade. Compra com inteligência. |
 | **Tipografia** | *Fraunces* (títulos) + *Outfit* (texto) |
-| **Primária** | Verde floresta `#1a6b4a` → folha `#2d9b6a` |
-| **Acento** | Âmbar `#e8a317` |
-| **Fundos** | Creme `#f6faf7`, névoa `#e8f5ee`, areia `#f0ebe3` |
-| **Texto** | Tinta `#14241f`, ardósia `#5a6b64` |
+| **Primária** | Degradê laranja → vermelho → amarelo `#c2410c` → `#ea580c` → `#f59e0b` |
+| **Acento** | Âmbar `#f59e0b` · coral `#e11d48` |
+| **Fundos** | Creme `#fff8f2`, névoa `#fff3e8`, areia `#f3e6d8` |
+| **Texto** | Tinta `#1c1210`, ardósia `#6b564c` |
 
 Atmosfera com mesh gradients leves, hero full-bleed e cartão digital em degradê. Contraste e foco visível pensados para acessibilidade.
 
@@ -31,8 +31,11 @@ Veja `frontend/README.md`.
 
 - **Next.js 15** (App Router) + React 19 + TypeScript
 - **Tailwind CSS 4**
-- **Prisma** + **SQLite** (pronto para migrar a PostgreSQL)
+- **Prisma** + **PostgreSQL**
+- **PWA** (manifest + service worker)
 - **Zod** (validação) + **bcryptjs** (senha)
+
+Detalhes: [`docs/ARQUITETURA.md`](docs/ARQUITETURA.md)
 
 ## Estrutura de pastas (front)
 
@@ -56,14 +59,21 @@ public/logo/     → marca SVG
 
 ## Como rodar
 
+1. Copie o ambiente: `copy .env.example .env` (Windows) ou `cp .env.example .env`
+2. Suba o PostgreSQL:
+
 ```bash
 npm install
-npx prisma db push
-npm run db:seed
-npm run dev
+npm run db:up
+npm run db:ready
+npm run dev:lan
 ```
 
-Abra [http://localhost:3000](http://localhost:3000).
+`npm run db:up` usa **Docker** se estiver disponível; senão usa o **PostgreSQL do Windows** (porta 5432). Alternativa sem serviço: `npm run db:embed` (porta 5433).
+
+Abra [http://localhost:3000](http://localhost:3000) · health: [/api/health](http://localhost:3000/api/health) (deve retornar `"database":"up"`).
+
+**Docker Desktop:** WSL + Virtual Machine Platform já foram habilitados. **Reinicie o Windows uma vez**, abra o Docker Desktop e rode `npm run after:reboot`. Enquanto isso, o app já funciona com PostgreSQL do Windows (`npm run start:all`).
 
 ### Fluxo sugerido de teste
 
@@ -74,11 +84,9 @@ Abra [http://localhost:3000](http://localhost:3000).
 
 ## Banco de dados
 
-Modelos: `Cliente`, `Ticket`, `Duvida`, `Faq`.
+Modelos: `Cliente`, `Ticket`, `Duvida`, `Faq` (PostgreSQL).
 
 O cadastro grava o cliente com senha hasheada e gera `numeroCartao`. Login cria cookie `httpOnly`. Tickets/dúvidas vinculam ao cliente quando houver sessão ou e-mail cadastrado.
-
-Para produção, troque `DATABASE_URL` no `.env` por PostgreSQL e rode `npx prisma db push`.
 
 ## Scripts
 
@@ -86,6 +94,11 @@ Para produção, troque `DATABASE_URL` no `.env` por PostgreSQL e rode `npx pris
 |---------|------|
 | `npm run dev` | Servidor de desenvolvimento |
 | `npm run build` | Build de produção |
-| `npm run db:push` | Sincroniza schema |
+| `npm run start:all` | Banco + migrate/seed + Next.js LAN (atalho) |
+| `npm run db:up` | Docker (se pronto) ou PostgreSQL Windows (5432) |
+| `npm run db:embed` | PostgreSQL embutido (porta 5433) |
+| `npm run db:check` | Testa conexão e conta registros |
+| `npm run db:setup` / `db:ready` | Migra + seed |
+| `npm run db:migrate` | Aplica migrations |
 | `npm run db:seed` | Popula FAQ |
 | `npm run db:studio` | Interface visual do Prisma |

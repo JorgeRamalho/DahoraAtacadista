@@ -43,13 +43,37 @@ Registro das interações com a IA e alterações aplicadas no projeto (14/07/20
 | Branch de histórico | `docs/historico-registros` com este arquivo |
 | Remote | `https://github.com/JorgeRamalho/DahoraAtacadista.git` |
 
+## Sessão 5 — Identidade, responsivo e stack
+
+| Ação | Resultado |
+|------|-----------|
+| Paleta verde → laranja/vermelho/amarelo | Tokens e gradientes atualizados |
+| Responsivo mobile/tablet/desktop | Breakpoints, botões touch, menu |
+| PostgreSQL + PWA + APIs | Docker Compose, migrations, manifest/SW, `/api/health`, `/api/faq` |
+
+## Sessão 6 — Backend Docker / PostgreSQL (finalização)
+
+| Ação | Resultado |
+|------|-----------|
+| Inspeção Docker + Postgres | Docker não estava instalado; `.env` apontava para 5433 parada |
+| Instalação Docker Desktop | Instalado via winget (`docker` CLI 29.x) |
+| WSL | Necessário para o motor Docker; instalação elevada (UAC) |
+| PostgreSQL Windows | Role/DB `dahora` na porta **5432**; migrations + seed OK |
+| `npm run db:up` | Docker se disponível; senão serviço Windows PG |
+| `npm run db:check` / `start:all` | Scripts de verificação e boot único |
+| Validação | `/api/health` up · FAQ 10 · cadastro gravando no PostgreSQL |
+| WSL / Virtual Machine Platform | Recursos habilitados via Admin; **reinício do Windows necessário** para Docker engine |
+| Pós-reboot | `npm run after:reboot` sobe container + migrate + check |
+
 ## Arquivos sensíveis (não versionados)
 
 - `.env` — permanece local (secrets)
 - `.env.example` — template público para setup
-- `node_modules/`, `.next/`, bancos Prisma locais — ignorados pelo `.gitignore`
+- `node_modules/`, `.next/`, `data/pg/` — ignorados pelo `.gitignore`
 
-## Estado atual relevante (front)
+## Estado atual relevante
 
 - Home: carrossel → Por que Dahora → Spotlight Dahora Card → Hero e demais seções
 - Altura do carrossel fixa via `--carousel-height` em `frontend/css/style.css`
+- Banco padrão: PostgreSQL Windows **5432** (`DATABASE_URL` no `.env`)
+- App: `npm run start:all` ou `db:up` + `db:ready` + `dev:lan`

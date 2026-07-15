@@ -1,5 +1,6 @@
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
+import { AppStatusBar } from "@/components/layout/AppStatusBar";
 
 export function SiteShell({ children }: { children: React.ReactNode }) {
   return (
@@ -10,7 +11,10 @@ export function SiteShell({ children }: { children: React.ReactNode }) {
       >
         Ir para o conteúdo
       </a>
-      <Header />
+      <div className="sticky top-0 z-50">
+        <Header />
+        <AppStatusBar />
+      </div>
       <main id="conteudo" className="flex-1">
         {children}
       </main>

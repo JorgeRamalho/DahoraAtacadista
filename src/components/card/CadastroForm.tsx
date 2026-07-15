@@ -14,10 +14,15 @@ const ESTADOS = [
 
 type FormState = {
   nomeCompleto: string;
+  nomeSocial: string;
   cpf: string;
+  rg: string;
   email: string;
   telefone: string;
+  telefoneAlternativo: string;
   dataNascimento: string;
+  genero: string;
+  estadoCivil: string;
   cep: string;
   endereco: string;
   numero: string;
@@ -25,17 +30,24 @@ type FormState = {
   bairro: string;
   cidade: string;
   estado: string;
+  comoConheceu: string;
   senha: string;
   confirmarSenha: string;
   aceiteTermos: boolean;
+  aceiteMarketing: boolean;
 };
 
 const initial: FormState = {
   nomeCompleto: "",
+  nomeSocial: "",
   cpf: "",
+  rg: "",
   email: "",
   telefone: "",
+  telefoneAlternativo: "",
   dataNascimento: "",
+  genero: "",
+  estadoCivil: "",
   cep: "",
   endereco: "",
   numero: "",
@@ -43,15 +55,39 @@ const initial: FormState = {
   bairro: "",
   cidade: "",
   estado: "",
+  comoConheceu: "",
   senha: "",
   confirmarSenha: "",
   aceiteTermos: false,
+  aceiteMarketing: false,
 };
+
+const STEPS = [
+  { id: 1, label: "Dados pessoais" },
+  { id: 2, label: "Endereço" },
+  { id: 3, label: "Acesso" },
+] as const;
+
+function FieldError({ message }: { message?: string }) {
+  if (!message) return null;
+  return (
+    <p className="mt-1 text-sm text-dahora-coral" role="alert">
+      {message}
+    </p>
+  );
+}
+
+function fieldClass(hasError?: string) {
+  return hasError
+    ? "input-field border-dahora-coral focus:border-dahora-coral"
+    : "input-field";
+}
 
 export function CadastroForm() {
   const [form, setForm] = useState<FormState>(initial);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [loading, setLoading] = useState(false);
+  const [cepLoading, setCepLoading] = useState(false);
   const [success, setSuccess] = useState<{
     numeroCartao: string;
     nome: string;
@@ -60,11 +96,19 @@ export function CadastroForm() {
 
   function update<K extends keyof FormState>(key: K, value: FormState[K]) {
     setForm((prev) => ({ ...prev, [key]: value }));
+    if (errors[key]) {
+      setErrors((prev) => {
+        const next = { ...prev };
+        delete next[key];
+        return next;
+      });
+    }
   }
 
   async function buscarCep(cep: string) {
     const digits = cep.replace(/\D/g, "");
     if (digits.length !== 8) return;
+    setCepLoading(true);
     try {
       const res = await fetch(`https://viacep.com.br/ws/${digits}/json/`);
       const data = await res.json();
@@ -79,6 +123,8 @@ export function CadastroForm() {
       }
     } catch {
       /* ViaCEP opcional */
+    } finally {
+      setCepLoading(false);
     }
   }
 
@@ -99,6 +145,12 @@ export function CadastroForm() {
       if (!res.ok) {
         if (data.fieldErrors) setErrors(data.fieldErrors);
         setApiError(data.message || "Não foi possível concluir o cadastro.");
+        const firstKey = data.fieldErrors
+          ? Object.keys(data.fieldErrors)[0]
+          : null;
+        if (firstKey) {
+          document.getElementById(firstKey)?.focus();
+        }
         return;
       }
 
@@ -108,7 +160,9 @@ export function CadastroForm() {
       });
       setForm(initial);
     } catch {
-      setApiError("Erro de conexão. Tente novamente.");
+      setApiError(
+        "Erro de conexão com a API. Confirme se o servidor e o PostgreSQL estão ativos (npm run start:all)."
+      );
     } finally {
       setLoading(false);
     }
@@ -124,10 +178,14 @@ export function CadastroForm() {
           Cadastro concluído, {success.nome.split(" ")[0]}!
         </h2>
         <p className="mt-3 text-dahora-slate">
-          Seu Dahora Card digital já está ativo. Número do cartão:
+          Seus dados foram gravados na tabela <strong>Cliente</strong> do
+          PostgreSQL. Número do Dahora Card:
         </p>
         <p className="mt-4 font-mono text-xl font-semibold tracking-wider text-dahora-forest">
           {success.numeroCartao}
+        </p>
+        <p className="mt-2 text-sm text-dahora-slate">
+          Bônus de boas-vindas: 100 pontos · status ativo
         </p>
         <a href="/area-cliente" className="btn-primary mt-8 inline-flex">
           Ir para Área do Cliente
@@ -137,148 +195,264 @@ export function CadastroForm() {
   }
 
   return (
-    <form onSubmit={onSubmit} className="card-surface space-y-8 rounded-3xl p-6 md:p-10" noValidate>
+    <form
+      onSubmit={onSubmit}
+      className="card-surface space-y-8 rounded-3xl p-6 md:p-10"
+      noValidate
+    >
+      <div>
+        <p className="rounded-xl bg-dahora-mist/80 px-4 py-3 text-sm text-dahora-slate">
+          Formulário completo do Dahora Card. Os dados vão para o PostgreSQL
+          via <code className="text-dahora-forest">/api/cadastro</code>. Campos
+          com * são obrigatórios.
+        </p>
+
+        <ol className="mt-5 grid grid-cols-3 gap-2" aria-label="Etapas do cadastro">
+          {STEPS.map((step) => (
+            <li
+              key={step.id}
+              className="rounded-xl border border-dahora-line bg-white px-2 py-2 text-center text-xs font-semibold text-dahora-slate md:text-sm"
+            >
+              <span className="text-dahora-forest">{step.id}.</span> {step.label}
+            </li>
+          ))}
+        </ol>
+      </div>
+
       <fieldset>
         <legend className="font-display mb-5 text-xl font-semibold text-dahora-ink">
-          Dados pessoais
+          1. Dados pessoais
         </legend>
         <div className="grid gap-4 md:grid-cols-2">
           <div className="md:col-span-2">
             <label className="label-field" htmlFor="nomeCompleto">
-              Nome completo
+              Nome completo *
             </label>
             <input
               id="nomeCompleto"
-              className="input-field"
+              className={fieldClass(errors.nomeCompleto)}
               value={form.nomeCompleto}
               onChange={(e) => update("nomeCompleto", e.target.value)}
               autoComplete="name"
+              aria-invalid={Boolean(errors.nomeCompleto)}
               required
             />
-            {errors.nomeCompleto && (
-              <p className="mt-1 text-sm text-dahora-coral">{errors.nomeCompleto}</p>
-            )}
+            <FieldError message={errors.nomeCompleto} />
+          </div>
+          <div>
+            <label className="label-field" htmlFor="nomeSocial">
+              Nome social
+            </label>
+            <input
+              id="nomeSocial"
+              className={fieldClass(errors.nomeSocial)}
+              value={form.nomeSocial}
+              onChange={(e) => update("nomeSocial", e.target.value)}
+            />
+            <FieldError message={errors.nomeSocial} />
           </div>
           <div>
             <label className="label-field" htmlFor="cpf">
-              CPF
+              CPF *
             </label>
             <input
               id="cpf"
-              className="input-field"
+              className={fieldClass(errors.cpf)}
               value={form.cpf}
               onChange={(e) => update("cpf", formatCpf(e.target.value))}
               inputMode="numeric"
               placeholder="000.000.000-00"
+              aria-invalid={Boolean(errors.cpf)}
               required
             />
-            {errors.cpf && <p className="mt-1 text-sm text-dahora-coral">{errors.cpf}</p>}
+            <FieldError message={errors.cpf} />
+          </div>
+          <div>
+            <label className="label-field" htmlFor="rg">
+              RG
+            </label>
+            <input
+              id="rg"
+              className={fieldClass(errors.rg)}
+              value={form.rg}
+              onChange={(e) => update("rg", e.target.value)}
+            />
+            <FieldError message={errors.rg} />
           </div>
           <div>
             <label className="label-field" htmlFor="dataNascimento">
-              Data de nascimento
+              Data de nascimento *
             </label>
             <input
               id="dataNascimento"
               type="date"
-              className="input-field"
+              className={fieldClass(errors.dataNascimento)}
               value={form.dataNascimento}
               onChange={(e) => update("dataNascimento", e.target.value)}
+              aria-invalid={Boolean(errors.dataNascimento)}
               required
             />
-            {errors.dataNascimento && (
-              <p className="mt-1 text-sm text-dahora-coral">{errors.dataNascimento}</p>
-            )}
+            <FieldError message={errors.dataNascimento} />
+          </div>
+          <div>
+            <label className="label-field" htmlFor="genero">
+              Gênero
+            </label>
+            <select
+              id="genero"
+              className="input-field"
+              value={form.genero}
+              onChange={(e) => update("genero", e.target.value)}
+            >
+              <option value="">Prefiro não informar agora</option>
+              <option value="feminino">Feminino</option>
+              <option value="masculino">Masculino</option>
+              <option value="outro">Outro</option>
+              <option value="prefiro_nao_informar">Prefiro não informar</option>
+            </select>
+          </div>
+          <div>
+            <label className="label-field" htmlFor="estadoCivil">
+              Estado civil
+            </label>
+            <select
+              id="estadoCivil"
+              className="input-field"
+              value={form.estadoCivil}
+              onChange={(e) => update("estadoCivil", e.target.value)}
+            >
+              <option value="">—</option>
+              <option value="solteiro">Solteiro(a)</option>
+              <option value="casado">Casado(a)</option>
+              <option value="uniao_estavel">União estável</option>
+              <option value="divorciado">Divorciado(a)</option>
+              <option value="viuvo">Viúvo(a)</option>
+              <option value="outro">Outro</option>
+            </select>
           </div>
           <div>
             <label className="label-field" htmlFor="email">
-              E-mail
+              E-mail *
             </label>
             <input
               id="email"
               type="email"
-              className="input-field"
+              className={fieldClass(errors.email)}
               value={form.email}
               onChange={(e) => update("email", e.target.value)}
               autoComplete="email"
+              aria-invalid={Boolean(errors.email)}
               required
             />
-            {errors.email && <p className="mt-1 text-sm text-dahora-coral">{errors.email}</p>}
+            <FieldError message={errors.email} />
           </div>
           <div>
             <label className="label-field" htmlFor="telefone">
-              Telefone / WhatsApp
+              Telefone / WhatsApp *
             </label>
             <input
               id="telefone"
-              className="input-field"
+              className={fieldClass(errors.telefone)}
               value={form.telefone}
               onChange={(e) => update("telefone", formatPhone(e.target.value))}
               inputMode="tel"
               placeholder="(00) 00000-0000"
+              aria-invalid={Boolean(errors.telefone)}
               required
             />
-            {errors.telefone && (
-              <p className="mt-1 text-sm text-dahora-coral">{errors.telefone}</p>
-            )}
+            <FieldError message={errors.telefone} />
+          </div>
+          <div>
+            <label className="label-field" htmlFor="telefoneAlternativo">
+              Telefone alternativo
+            </label>
+            <input
+              id="telefoneAlternativo"
+              className={fieldClass(errors.telefoneAlternativo)}
+              value={form.telefoneAlternativo}
+              onChange={(e) =>
+                update("telefoneAlternativo", formatPhone(e.target.value))
+              }
+              inputMode="tel"
+              placeholder="(00) 00000-0000"
+            />
+            <FieldError message={errors.telefoneAlternativo} />
+          </div>
+          <div>
+            <label className="label-field" htmlFor="comoConheceu">
+              Como conheceu a Dahora?
+            </label>
+            <select
+              id="comoConheceu"
+              className="input-field"
+              value={form.comoConheceu}
+              onChange={(e) => update("comoConheceu", e.target.value)}
+            >
+              <option value="">—</option>
+              <option value="loja">Loja física</option>
+              <option value="indicacao">Indicação</option>
+              <option value="redes_sociais">Redes sociais</option>
+              <option value="google">Google</option>
+              <option value="anuncio">Anúncio</option>
+              <option value="outro">Outro</option>
+            </select>
           </div>
         </div>
       </fieldset>
 
       <fieldset>
         <legend className="font-display mb-5 text-xl font-semibold text-dahora-ink">
-          Endereço
+          2. Endereço
         </legend>
         <div className="grid gap-4 md:grid-cols-6">
           <div className="md:col-span-2">
             <label className="label-field" htmlFor="cep">
-              CEP
+              CEP * {cepLoading ? <span className="font-normal">(buscando…)</span> : null}
             </label>
             <input
               id="cep"
-              className="input-field"
+              className={fieldClass(errors.cep)}
               value={form.cep}
               onChange={(e) => {
                 const v = formatCep(e.target.value);
                 update("cep", v);
-                if (v.replace(/\D/g, "").length === 8) buscarCep(v);
+                if (v.replace(/\D/g, "").length === 8) void buscarCep(v);
               }}
               inputMode="numeric"
               placeholder="00000-000"
+              aria-invalid={Boolean(errors.cep)}
               required
             />
-            {errors.cep && <p className="mt-1 text-sm text-dahora-coral">{errors.cep}</p>}
+            <FieldError message={errors.cep} />
           </div>
           <div className="md:col-span-4">
             <label className="label-field" htmlFor="endereco">
-              Endereço
+              Endereço *
             </label>
             <input
               id="endereco"
-              className="input-field"
+              className={fieldClass(errors.endereco)}
               value={form.endereco}
               onChange={(e) => update("endereco", e.target.value)}
               autoComplete="street-address"
+              aria-invalid={Boolean(errors.endereco)}
               required
             />
-            {errors.endereco && (
-              <p className="mt-1 text-sm text-dahora-coral">{errors.endereco}</p>
-            )}
+            <FieldError message={errors.endereco} />
           </div>
           <div className="md:col-span-2">
             <label className="label-field" htmlFor="numero">
-              Número
+              Número *
             </label>
             <input
               id="numero"
-              className="input-field"
+              className={fieldClass(errors.numero)}
               value={form.numero}
               onChange={(e) => update("numero", e.target.value)}
+              aria-invalid={Boolean(errors.numero)}
               required
             />
-            {errors.numero && (
-              <p className="mt-1 text-sm text-dahora-coral">{errors.numero}</p>
-            )}
+            <FieldError message={errors.numero} />
           </div>
           <div className="md:col-span-4">
             <label className="label-field" htmlFor="complemento">
@@ -289,47 +463,47 @@ export function CadastroForm() {
               className="input-field"
               value={form.complemento}
               onChange={(e) => update("complemento", e.target.value)}
+              placeholder="Apto, bloco, referência…"
             />
           </div>
           <div className="md:col-span-2">
             <label className="label-field" htmlFor="bairro">
-              Bairro
+              Bairro *
             </label>
             <input
               id="bairro"
-              className="input-field"
+              className={fieldClass(errors.bairro)}
               value={form.bairro}
               onChange={(e) => update("bairro", e.target.value)}
+              aria-invalid={Boolean(errors.bairro)}
               required
             />
-            {errors.bairro && (
-              <p className="mt-1 text-sm text-dahora-coral">{errors.bairro}</p>
-            )}
+            <FieldError message={errors.bairro} />
           </div>
           <div className="md:col-span-3">
             <label className="label-field" htmlFor="cidade">
-              Cidade
+              Cidade *
             </label>
             <input
               id="cidade"
-              className="input-field"
+              className={fieldClass(errors.cidade)}
               value={form.cidade}
               onChange={(e) => update("cidade", e.target.value)}
+              aria-invalid={Boolean(errors.cidade)}
               required
             />
-            {errors.cidade && (
-              <p className="mt-1 text-sm text-dahora-coral">{errors.cidade}</p>
-            )}
+            <FieldError message={errors.cidade} />
           </div>
           <div className="md:col-span-1">
             <label className="label-field" htmlFor="estado">
-              UF
+              UF *
             </label>
             <select
               id="estado"
-              className="input-field"
+              className={fieldClass(errors.estado)}
               value={form.estado}
               onChange={(e) => update("estado", e.target.value)}
+              aria-invalid={Boolean(errors.estado)}
               required
             >
               <option value="">—</option>
@@ -339,79 +513,97 @@ export function CadastroForm() {
                 </option>
               ))}
             </select>
-            {errors.estado && (
-              <p className="mt-1 text-sm text-dahora-coral">{errors.estado}</p>
-            )}
+            <FieldError message={errors.estado} />
           </div>
         </div>
       </fieldset>
 
       <fieldset>
         <legend className="font-display mb-5 text-xl font-semibold text-dahora-ink">
-          Acesso à Área do Cliente
+          3. Acesso à Área do Cliente
         </legend>
         <div className="grid gap-4 md:grid-cols-2">
           <div>
             <label className="label-field" htmlFor="senha">
-              Senha
+              Senha * (mín. 6 caracteres)
             </label>
             <input
               id="senha"
               type="password"
-              className="input-field"
+              className={fieldClass(errors.senha)}
               value={form.senha}
               onChange={(e) => update("senha", e.target.value)}
               autoComplete="new-password"
               minLength={6}
+              aria-invalid={Boolean(errors.senha)}
               required
             />
-            {errors.senha && <p className="mt-1 text-sm text-dahora-coral">{errors.senha}</p>}
+            <FieldError message={errors.senha} />
           </div>
           <div>
             <label className="label-field" htmlFor="confirmarSenha">
-              Confirmar senha
+              Confirmar senha *
             </label>
             <input
               id="confirmarSenha"
               type="password"
-              className="input-field"
+              className={fieldClass(errors.confirmarSenha)}
               value={form.confirmarSenha}
               onChange={(e) => update("confirmarSenha", e.target.value)}
               autoComplete="new-password"
+              aria-invalid={Boolean(errors.confirmarSenha)}
               required
             />
-            {errors.confirmarSenha && (
-              <p className="mt-1 text-sm text-dahora-coral">{errors.confirmarSenha}</p>
-            )}
+            <FieldError message={errors.confirmarSenha} />
           </div>
         </div>
       </fieldset>
 
-      <label className="flex items-start gap-3 text-sm text-dahora-slate">
-        <input
-          type="checkbox"
-          className="mt-1 h-4 w-4 rounded border-dahora-line text-dahora-forest"
-          checked={form.aceiteTermos}
-          onChange={(e) => update("aceiteTermos", e.target.checked)}
-          required
-        />
-        <span>
-          Li e aceito o tratamento dos meus dados pessoais conforme a LGPD para
-          emissão do Dahora Card e atendimento na Área do Cliente.
-        </span>
-      </label>
-      {errors.aceiteTermos && (
-        <p className="text-sm text-dahora-coral">{errors.aceiteTermos}</p>
-      )}
+      <div className="space-y-3">
+        <label className="flex items-start gap-3 text-sm text-dahora-slate">
+          <input
+            type="checkbox"
+            className="mt-1 h-4 w-4 rounded border-dahora-line text-dahora-forest"
+            checked={form.aceiteTermos}
+            onChange={(e) => update("aceiteTermos", e.target.checked)}
+            required
+          />
+          <span>
+            Li e aceito o tratamento dos meus dados pessoais conforme a LGPD
+            para emissão do Dahora Card e atendimento na Área do Cliente. *
+          </span>
+        </label>
+        <FieldError message={errors.aceiteTermos} />
+
+        <label className="flex items-start gap-3 text-sm text-dahora-slate">
+          <input
+            type="checkbox"
+            className="mt-1 h-4 w-4 rounded border-dahora-line text-dahora-forest"
+            checked={form.aceiteMarketing}
+            onChange={(e) => update("aceiteMarketing", e.target.checked)}
+          />
+          <span>
+            Quero receber ofertas e novidades da Dahora por e-mail/WhatsApp
+            (opcional).
+          </span>
+        </label>
+      </div>
 
       {apiError && (
-        <p className="rounded-xl bg-red-50 px-4 py-3 text-sm text-red-700" role="alert">
+        <p
+          className="rounded-xl bg-red-50 px-4 py-3 text-sm text-red-700"
+          role="alert"
+        >
           {apiError}
         </p>
       )}
 
-      <button type="submit" className="btn-primary w-full md:w-auto" disabled={loading}>
-        {loading ? "Enviando cadastro…" : "Concluir cadastro do Dahora Card"}
+      <button
+        type="submit"
+        className="btn-primary w-full md:w-auto"
+        disabled={loading}
+      >
+        {loading ? "Gravando no PostgreSQL…" : "Concluir cadastro do Dahora Card"}
       </button>
     </form>
   );

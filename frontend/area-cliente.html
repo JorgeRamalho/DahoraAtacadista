@@ -1,10 +1,10 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="pt-BR">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Área do Cliente · Dahora</title>
-    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/style.css?v=status-bar-1" />
   </head>
   <body>
     <div class="layout">
@@ -16,7 +16,7 @@
           </a>
           <nav class="nav-desktop" aria-label="Principal">
             <a href="index.html">Início</a>
-            <a href="cadastro.html">Cadastro</a>
+            <a href="index.html#cadastro">Cadastro</a>
             <a href="area-cliente.html" aria-current="page">Área do Cliente</a>
             <a href="sac.html">SAC 24h</a>
           </nav>
@@ -25,7 +25,7 @@
         <div class="nav-mobile" data-menu-panel>
           <div class="container">
             <a href="area-cliente.html">Área do Cliente</a>
-            <a href="cadastro.html">Cadastro</a>
+            <a href="index.html#cadastro">Cadastro</a>
           </div>
         </div>
       </header>
@@ -39,6 +39,8 @@
               Entre com o e-mail e a senha do cadastro do Dahora Card. O dashboard completo
               com cartão e pontos fica em
               <a href="http://localhost:3000/area-cliente" style="color:var(--dahora-forest);font-weight:600;text-decoration:underline">localhost:3000/area-cliente</a>
+              — cadastro completo com PostgreSQL em
+              <a href="http://localhost:3000/cadastro" style="color:var(--dahora-forest);font-weight:600;text-decoration:underline">/cadastro</a>
               após o login.
             </p>
           </div>
@@ -59,7 +61,7 @@
               <button class="btn btn-primary btn-block" type="submit">Entrar na Área do Cliente</button>
               <p class="text-center muted mt-2" style="font-size:0.9rem">
                 Ainda não tem cartão?
-                <a href="cadastro.html" style="color:var(--dahora-forest);font-weight:600">Cadastre-se</a>
+                <a href="index.html#cadastro" style="color:var(--dahora-forest);font-weight:600">Cadastre-se</a>
               </p>
             </form>
 
@@ -77,6 +79,6 @@
         </div>
       </footer>
     </div>
-    <script src="js/script.js"></script>
+    <script src="js/script.js?v=status-bar-1"></script>
   </body>
 </html>

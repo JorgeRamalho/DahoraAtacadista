@@ -5,7 +5,7 @@ const steps = [
     n: "01",
     title: "Cadastre-se",
     text: "Preencha o formulário completo do Dahora Card com dados pessoais e endereço.",
-    href: "/cadastro",
+    href: "/#cadastro",
   },
   {
     n: "02",

@@ -1,0 +1,12 @@
+-- AlterTable
+ALTER TABLE "Cliente" ADD COLUMN IF NOT EXISTS "nomeSocial" TEXT;
+ALTER TABLE "Cliente" ADD COLUMN IF NOT EXISTS "rg" TEXT;
+ALTER TABLE "Cliente" ADD COLUMN IF NOT EXISTS "telefoneAlternativo" TEXT;
+ALTER TABLE "Cliente" ADD COLUMN IF NOT EXISTS "genero" TEXT;
+ALTER TABLE "Cliente" ADD COLUMN IF NOT EXISTS "estadoCivil" TEXT;
+ALTER TABLE "Cliente" ADD COLUMN IF NOT EXISTS "comoConheceu" TEXT;
+ALTER TABLE "Cliente" ADD COLUMN IF NOT EXISTS "aceiteMarketing" BOOLEAN NOT NULL DEFAULT false;
+ALTER TABLE "Cliente" ADD COLUMN IF NOT EXISTS "aceiteLgpdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP;
+
+-- CreateIndex
+CREATE INDEX IF NOT EXISTS "Cliente_cidade_estado_idx" ON "Cliente"("cidade", "estado");

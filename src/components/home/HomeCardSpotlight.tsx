@@ -2,9 +2,9 @@ import Link from "next/link";
 
 export function HomeCardSpotlight() {
   return (
-    <section className="section-pad !pt-0">
+    <section className="section-pad" aria-label="Dahora Card">
       <div className="container-page">
-        <div className="relative overflow-hidden rounded-[2rem] bg-gradient-to-br from-[#163d30] via-[#1a6b4a] to-[#2d9b6a] px-6 py-12 text-white md:px-12 md:py-16">
+        <div className="relative my-2 overflow-hidden rounded-[2rem] bg-gradient-to-br from-[#7f1d1d] via-[#c2410c] to-[#f59e0b] px-6 py-12 text-white md:px-12 md:py-16">
           <div
             className="pointer-events-none absolute -right-16 -top-16 h-64 w-64 rounded-full bg-dahora-amber/25 blur-3xl"
             aria-hidden
@@ -26,7 +26,7 @@ export function HomeCardSpotlight() {
                 Cadastre-se uma vez. Acompanhe pontos, abra chamados no SAC e tire
                 dúvidas com a mesma conta — tudo responsivo no celular ou no desktop.
               </p>
-              <Link href="/cadastro" className="btn-primary mt-8 !bg-white !text-dahora-forest !shadow-none">
+              <Link href="/#cadastro" className="btn-primary mt-8 !bg-white !text-dahora-forest !shadow-none">
                 Quero meu cartão
               </Link>
             </div>
@@ -36,7 +36,7 @@ export function HomeCardSpotlight() {
                 className="relative aspect-[1.6/1] overflow-hidden rounded-3xl p-6 shadow-2xl"
                 style={{
                   background:
-                    "linear-gradient(145deg, rgba(255,255,255,0.18), rgba(255,255,255,0.05)), linear-gradient(135deg, #0f2a22, #1a6b4a 60%, #c99212)",
+                    "linear-gradient(145deg, rgba(255,255,255,0.18), rgba(255,255,255,0.05)), linear-gradient(135deg, #3b1410, #c2410c 50%, #f59e0b)",
                 }}
               >
                 <div className="flex items-start justify-between">

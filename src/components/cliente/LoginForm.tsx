@@ -75,7 +75,7 @@ export function LoginForm() {
       </button>
       <p className="text-center text-sm text-dahora-slate">
         Ainda não tem cartão?{" "}
-        <a href="/cadastro" className="font-semibold text-dahora-forest underline">
+        <a href="/#cadastro" className="font-semibold text-dahora-forest underline">
           Cadastre-se
         </a>
       </p>

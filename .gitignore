@@ -41,6 +41,11 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-# prisma
+# prisma / local db leftovers
 /prisma/*.db
 /prisma/*.db-journal
+*.db
+*.db-journal
+
+# PostgreSQL embutido (dados locais)
+/data/pg/

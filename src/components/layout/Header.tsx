@@ -9,34 +9,34 @@ export function Header() {
   const [open, setOpen] = useState(false);
 
   return (
-    <header className="sticky top-0 z-50 border-b border-dahora-line/70 bg-dahora-cream/85 backdrop-blur-xl">
+    <header className="border-b border-dahora-line/70 bg-dahora-cream/85 pt-[env(safe-area-inset-top,0px)] backdrop-blur-xl">
       <div className="container-page flex h-[4.25rem] items-center justify-between gap-4">
         <Logo />
 
-        <nav className="hidden items-center gap-1 lg:flex" aria-label="Principal">
+        <nav className="hidden items-center gap-0.5 xl:flex" aria-label="Principal">
           {navLinks.map((link) => (
             <Link
               key={link.href}
               href={link.href}
-              className="rounded-full px-3.5 py-2 text-sm font-medium text-dahora-slate transition hover:bg-dahora-mist hover:text-dahora-forest"
+              className="rounded-full px-3 py-2 text-sm font-medium text-dahora-slate transition hover:bg-dahora-mist hover:text-dahora-forest"
             >
               {link.label}
             </Link>
           ))}
         </nav>
 
-        <div className="hidden items-center gap-2 lg:flex">
+        <div className="hidden items-center gap-2 xl:flex">
           <Link href="/area-cliente" className="btn-secondary !px-4 !py-2.5 text-sm">
             Entrar
           </Link>
-          <Link href="/cadastro" className="btn-primary !px-4 !py-2.5 text-sm">
+          <Link href="/#cadastro" className="btn-primary !px-4 !py-2.5 text-sm">
             Pedir cartão
           </Link>
         </div>
 
         <button
           type="button"
-          className="grid h-11 w-11 place-items-center rounded-xl border border-dahora-line bg-white lg:hidden"
+          className="grid h-11 w-11 place-items-center rounded-xl border border-dahora-line bg-white xl:hidden"
           aria-expanded={open}
           aria-controls="menu-mobile"
           aria-label={open ? "Fechar menu" : "Abrir menu"}
@@ -56,7 +56,7 @@ export function Header() {
       {open && (
         <div
           id="menu-mobile"
-          className="border-t border-dahora-line bg-white lg:hidden"
+          className="max-h-[70vh] overflow-y-auto border-t border-dahora-line bg-white xl:hidden"
         >
           <nav className="container-page flex flex-col gap-1 py-4" aria-label="Mobile">
             {navLinks.map((link) => (
@@ -73,7 +73,7 @@ export function Header() {
               <Link href="/area-cliente" className="btn-secondary w-full" onClick={() => setOpen(false)}>
                 Entrar
               </Link>
-              <Link href="/cadastro" className="btn-primary w-full" onClick={() => setOpen(false)}>
+              <Link href="/#cadastro" className="btn-primary w-full" onClick={() => setOpen(false)}>
                 Pedir cartão
               </Link>
             </div>

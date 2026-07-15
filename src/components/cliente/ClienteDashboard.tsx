@@ -6,14 +6,27 @@ import { formatDateBr, mascararCartao } from "@/lib/utils/format";
 type Cliente = {
   id: string;
   nomeCompleto: string;
+  nomeSocial?: string | null;
   email: string;
   telefone: string;
+  telefoneAlternativo?: string | null;
   cpf: string;
+  rg?: string | null;
+  dataNascimento?: string | null;
+  genero?: string | null;
+  estadoCivil?: string | null;
+  cep?: string | null;
+  endereco?: string | null;
+  numero?: string | null;
+  complemento?: string | null;
+  bairro?: string | null;
+  cidade: string;
+  estado: string;
+  comoConheceu?: string | null;
   numeroCartao: string;
   pontos: number;
   status: string;
-  cidade: string;
-  estado: string;
+  aceiteMarketing?: boolean;
   createdAt: string | Date;
 };
 
@@ -74,7 +87,7 @@ export function ClienteDashboard({
           className="relative overflow-hidden rounded-3xl p-6 text-white shadow-xl lg:col-span-2"
           style={{
             background:
-              "linear-gradient(145deg, #12201b 0%, #1a6b4a 55%, #c99212 140%)",
+              "linear-gradient(145deg, #3b1410 0%, #c2410c 50%, #f59e0b 140%)",
           }}
         >
           <div className="flex items-start justify-between">
@@ -127,25 +140,47 @@ export function ClienteDashboard({
           <dl className="mt-4 space-y-3 text-sm">
             <div className="flex justify-between gap-4 border-b border-dahora-line pb-2">
               <dt className="text-dahora-slate">E-mail</dt>
-              <dd className="font-medium">{cliente.email}</dd>
+              <dd className="font-medium text-right">{cliente.email}</dd>
             </div>
             <div className="flex justify-between gap-4 border-b border-dahora-line pb-2">
               <dt className="text-dahora-slate">Telefone</dt>
-              <dd className="font-medium">{cliente.telefone}</dd>
+              <dd className="font-medium text-right">{cliente.telefone}</dd>
             </div>
+            {cliente.telefoneAlternativo && (
+              <div className="flex justify-between gap-4 border-b border-dahora-line pb-2">
+                <dt className="text-dahora-slate">Tel. alternativo</dt>
+                <dd className="font-medium text-right">{cliente.telefoneAlternativo}</dd>
+              </div>
+            )}
             <div className="flex justify-between gap-4 border-b border-dahora-line pb-2">
               <dt className="text-dahora-slate">CPF</dt>
-              <dd className="font-medium">{cliente.cpf}</dd>
+              <dd className="font-medium text-right">{cliente.cpf}</dd>
             </div>
+            {cliente.rg && (
+              <div className="flex justify-between gap-4 border-b border-dahora-line pb-2">
+                <dt className="text-dahora-slate">RG</dt>
+                <dd className="font-medium text-right">{cliente.rg}</dd>
+              </div>
+            )}
+            {cliente.dataNascimento && (
+              <div className="flex justify-between gap-4 border-b border-dahora-line pb-2">
+                <dt className="text-dahora-slate">Nascimento</dt>
+                <dd className="font-medium text-right">{cliente.dataNascimento}</dd>
+              </div>
+            )}
             <div className="flex justify-between gap-4 border-b border-dahora-line pb-2">
-              <dt className="text-dahora-slate">Cidade</dt>
-              <dd className="font-medium">
-                {cliente.cidade}/{cliente.estado}
+              <dt className="text-dahora-slate">Endereço</dt>
+              <dd className="font-medium text-right">
+                {[cliente.endereco, cliente.numero, cliente.bairro]
+                  .filter(Boolean)
+                  .join(", ")}
+                <br />
+                {cliente.cidade}/{cliente.estado} · CEP {cliente.cep}
               </dd>
             </div>
             <div className="flex justify-between gap-4">
               <dt className="text-dahora-slate">Cliente desde</dt>
-              <dd className="font-medium">{formatDateBr(cliente.createdAt)}</dd>
+              <dd className="font-medium text-right">{formatDateBr(cliente.createdAt)}</dd>
             </div>
           </dl>
         </section>

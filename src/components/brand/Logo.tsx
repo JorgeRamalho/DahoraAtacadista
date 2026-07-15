@@ -18,7 +18,7 @@ export function Logo({ variant = "default", className = "" }: LogoProps) {
       <span
         className="relative grid h-10 w-10 place-items-center rounded-2xl shadow-md"
         style={{
-          background: "linear-gradient(145deg, #1a6b4a 0%, #2d9b6a 55%, #e8a317 160%)",
+          background: "linear-gradient(145deg, #c2410c 0%, #ea580c 45%, #f59e0b 100%)",
         }}
         aria-hidden
       >

@@ -296,7 +296,7 @@ function App() {
         <StoreCarousel />
         <Hero />
         <Benefits />
-        <section className="section" style={{ paddingTop: 0 }}>
+        <section className="section section-spotlight" aria-label="Dahora Card">
           <div className="container">
             <div className="spotlight">
               <div className="spotlight-grid">

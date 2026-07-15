@@ -47,7 +47,7 @@ export default function DahoraCardPage() {
               passagem pelo caixa em benefício acumulado. Cadastro digital,
               aprovação ágil e experiência responsiva em qualquer tela.
             </p>
-            <Link href="/cadastro" className="btn-primary mt-8">
+            <Link href="/#cadastro" className="btn-primary mt-8">
               Solicitar agora
             </Link>
           </div>
@@ -63,7 +63,7 @@ export default function DahoraCardPage() {
             role="img"
             aria-label="Prateleiras de atacado com produtos organizados"
           >
-            <div className="absolute inset-0 bg-gradient-to-t from-[#12201b]/70 to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-t from-[#1c1210]/70 to-transparent" />
           </div>
         </div>
       </section>

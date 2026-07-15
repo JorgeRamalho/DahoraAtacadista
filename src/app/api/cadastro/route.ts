@@ -4,11 +4,20 @@ import { prisma } from "@/lib/db/prisma";
 import { cadastroSchema } from "@/lib/validations/schemas";
 import { gerarNumeroCartao } from "@/lib/utils/format";
 import { setSession } from "@/lib/auth/session";
+import { optionsCors, withCors } from "@/lib/api/cors";
+
+export async function OPTIONS(request: Request) {
+  return optionsCors(request);
+}
 
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const parsed = cadastroSchema.safeParse(body);
+    const parsed = cadastroSchema.safeParse({
+      ...body,
+      aceiteMarketing: Boolean(body?.aceiteMarketing),
+      aceiteTermos: body?.aceiteTermos === true || body?.aceiteTermos === "true",
+    });
 
     if (!parsed.success) {
       const fieldErrors: Record<string, string> = {};
@@ -16,9 +25,12 @@ export async function POST(request: Request) {
         const key = issue.path[0]?.toString() || "form";
         if (!fieldErrors[key]) fieldErrors[key] = issue.message;
       }
-      return NextResponse.json(
-        { message: "Verifique os campos destacados.", fieldErrors },
-        { status: 400 }
+      return withCors(
+        request,
+        NextResponse.json(
+          { message: "Verifique os campos destacados.", fieldErrors },
+          { status: 400 }
+        )
       );
     }
 
@@ -31,14 +43,17 @@ export async function POST(request: Request) {
     });
 
     if (existente) {
-      return NextResponse.json(
-        {
-          message:
-            existente.email === data.email.toLowerCase()
-              ? "Este e-mail já está cadastrado."
-              : "Este CPF já possui Dahora Card.",
-        },
-        { status: 409 }
+      return withCors(
+        request,
+        NextResponse.json(
+          {
+            message:
+              existente.email === data.email.toLowerCase()
+                ? "Este e-mail já está cadastrado."
+                : "Este CPF já possui Dahora Card.",
+          },
+          { status: 409 }
+        )
       );
     }
 
@@ -51,37 +66,56 @@ export async function POST(request: Request) {
 
     const cliente = await prisma.cliente.create({
       data: {
-        nomeCompleto: data.nomeCompleto.trim(),
+        nomeCompleto: data.nomeCompleto,
+        nomeSocial: data.nomeSocial ?? null,
         cpf: data.cpf,
-        email: data.email.toLowerCase().trim(),
+        rg: data.rg ?? null,
+        email: data.email.toLowerCase(),
         telefone: data.telefone,
+        telefoneAlternativo: data.telefoneAlternativo ?? null,
         dataNascimento: data.dataNascimento,
+        genero: data.genero ?? null,
+        estadoCivil: data.estadoCivil ?? null,
         cep: data.cep,
-        endereco: data.endereco.trim(),
-        numero: data.numero.trim(),
-        complemento: data.complemento?.trim() || null,
-        bairro: data.bairro.trim(),
-        cidade: data.cidade.trim(),
-        estado: data.estado.toUpperCase(),
+        endereco: data.endereco,
+        numero: data.numero,
+        complemento: data.complemento ?? null,
+        bairro: data.bairro,
+        cidade: data.cidade,
+        estado: data.estado,
+        comoConheceu: data.comoConheceu ?? null,
         senhaHash,
         numeroCartao,
         pontos: 100,
         status: "ativo",
+        aceiteMarketing: data.aceiteMarketing ?? false,
+        aceiteLgpdAt: new Date(),
       },
     });
 
     await setSession(cliente.id);
 
-    return NextResponse.json({
-      message: "Cadastro realizado com sucesso.",
-      numeroCartao: cliente.numeroCartao,
-      nomeCompleto: cliente.nomeCompleto,
-    });
+    return withCors(
+      request,
+      NextResponse.json({
+        ok: true,
+        message: "Cadastro realizado com sucesso. Dados salvos no PostgreSQL.",
+        numeroCartao: cliente.numeroCartao,
+        nomeCompleto: cliente.nomeCompleto,
+        id: cliente.id,
+      })
+    );
   } catch (error) {
     console.error("cadastro:", error);
-    return NextResponse.json(
-      { message: "Erro interno ao processar o cadastro." },
-      { status: 500 }
+    return withCors(
+      request,
+      NextResponse.json(
+        {
+          message:
+            "Erro ao gravar no PostgreSQL. Verifique se o banco está ativo (npm run db:up && npm run db:setup).",
+        },
+        { status: 500 }
+      )
     );
   }
 }

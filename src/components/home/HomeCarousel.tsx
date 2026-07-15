@@ -93,7 +93,7 @@ export function HomeCarousel() {
               className="h-full w-full object-cover"
               loading={i === 0 ? "eager" : "lazy"}
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-[#12201b]/75 via-[#12201b]/20 to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-t from-[#1c1210]/75 via-[#1c1210]/20 to-transparent" />
             <figcaption className="absolute bottom-5 left-0 right-0 px-4 text-center md:bottom-8">
               <span className="inline-block rounded-full bg-black/35 px-4 py-2 text-sm font-medium text-white backdrop-blur-md md:text-base">
                 {slide.caption}

@@ -1,33 +1,80 @@
 import { z } from "zod";
+import { isValidCpf } from "@/lib/validations/cpf";
+
+const emptyToUndefined = (v: unknown) =>
+  typeof v === "string" && v.trim() === "" ? undefined : v;
 
 export const cadastroSchema = z
   .object({
-    nomeCompleto: z.string().min(3, "Informe o nome completo"),
+    nomeCompleto: z.string().trim().min(3, "Informe o nome completo"),
+    nomeSocial: z.preprocess(emptyToUndefined, z.string().trim().min(2).optional()),
     cpf: z
       .string()
       .transform((v) => v.replace(/\D/g, ""))
-      .refine((v) => v.length === 11, "CPF deve ter 11 dígitos"),
-    email: z.string().email("E-mail inválido"),
+      .refine((v) => v.length === 11, "CPF deve ter 11 dígitos")
+      .refine(isValidCpf, "CPF inválido"),
+    rg: z.preprocess(emptyToUndefined, z.string().trim().min(4, "RG inválido").optional()),
+    email: z.string().trim().email("E-mail inválido"),
     telefone: z
       .string()
       .transform((v) => v.replace(/\D/g, ""))
       .refine((v) => v.length >= 10 && v.length <= 11, "Telefone inválido"),
-    dataNascimento: z.string().min(1, "Informe a data de nascimento"),
+    telefoneAlternativo: z.preprocess(
+      emptyToUndefined,
+      z
+        .string()
+        .transform((v) => v.replace(/\D/g, ""))
+        .refine((v) => v.length >= 10 && v.length <= 11, "Telefone alternativo inválido")
+        .optional()
+    ),
+    dataNascimento: z
+      .string()
+      .min(1, "Informe a data de nascimento")
+      .refine((v) => !Number.isNaN(Date.parse(v)), "Data inválida")
+      .refine((v) => {
+        const birth = new Date(v);
+        const today = new Date();
+        let age = today.getFullYear() - birth.getFullYear();
+        const m = today.getMonth() - birth.getMonth();
+        if (m < 0 || (m === 0 && today.getDate() < birth.getDate())) age -= 1;
+        return age >= 18;
+      }, "É necessário ter 18 anos ou mais"),
+    genero: z.preprocess(
+      emptyToUndefined,
+      z.enum(["feminino", "masculino", "outro", "prefiro_nao_informar"]).optional()
+    ),
+    estadoCivil: z.preprocess(
+      emptyToUndefined,
+      z
+        .enum(["solteiro", "casado", "uniao_estavel", "divorciado", "viuvo", "outro"])
+        .optional()
+    ),
     cep: z
       .string()
       .transform((v) => v.replace(/\D/g, ""))
       .refine((v) => v.length === 8, "CEP deve ter 8 dígitos"),
-    endereco: z.string().min(3, "Informe o endereço"),
-    numero: z.string().min(1, "Informe o número"),
-    complemento: z.string().optional(),
-    bairro: z.string().min(2, "Informe o bairro"),
-    cidade: z.string().min(2, "Informe a cidade"),
-    estado: z.string().length(2, "Use a UF com 2 letras"),
+    endereco: z.string().trim().min(3, "Informe o endereço"),
+    numero: z.string().trim().min(1, "Informe o número"),
+    complemento: z.preprocess(emptyToUndefined, z.string().trim().optional()),
+    bairro: z.string().trim().min(2, "Informe o bairro"),
+    cidade: z.string().trim().min(2, "Informe a cidade"),
+    estado: z
+      .string()
+      .trim()
+      .length(2, "Use a UF com 2 letras")
+      .transform((v) => v.toUpperCase()),
+    comoConheceu: z.preprocess(
+      emptyToUndefined,
+      z
+        .enum(["loja", "indicacao", "redes_sociais", "google", "anuncio", "outro"])
+        .optional()
+    ),
     senha: z.string().min(6, "A senha deve ter no mínimo 6 caracteres"),
     confirmarSenha: z.string().min(6, "Confirme a senha"),
     aceiteTermos: z.literal(true, {
-      errorMap: () => ({ message: "É necessário aceitar os termos" }),
+      errorMap: () => ({ message: "É necessário aceitar os termos e a LGPD" }),
     }),
+    aceiteMarketing: z.boolean().optional().default(false),
   })
   .refine((data) => data.senha === data.confirmarSenha, {
     message: "As senhas não coincidem",

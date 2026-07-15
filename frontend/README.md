@@ -9,7 +9,7 @@ frontend/
 ├── index.html              ← página inicial
 ├── cadastro.html
 ├── dahora-card.html
-├── faq.html
+├── faq.html               ← redireciona para index.html#faq
 ├── tire-sua-duvida.html
 ├── sac.html
 ├── area-cliente.html

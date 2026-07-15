@@ -21,8 +21,10 @@ function initMenu() {
 
   const setOpen = (open) => {
     panel.classList.toggle("is-open", open);
+    toggle.classList.toggle("is-open", open);
     toggle.setAttribute("aria-expanded", String(open));
     toggle.setAttribute("aria-label", open ? "Fechar menu" : "Abrir menu");
+    toggle.textContent = open ? "✕" : "☰";
     document.body.classList.toggle("nav-open", open);
   };
 
@@ -51,8 +53,17 @@ function initYear() {
 }
 
 /* ---------- Barra de status / acessibilidade / PWA ---------- */
+function syncHeaderOffset() {
+  const header = document.querySelector(".site-header");
+  if (!header) return;
+  const height = Math.ceil(header.getBoundingClientRect().height);
+  document.documentElement.style.setProperty(
+    "--header-offset",
+    `${Math.max(height, 64)}px`
+  );
+}
+
 function initStatusBar() {
-  const TEXT_KEY = "dahora-a11y-text";
   const header = document.querySelector(".site-header");
   if (!header) return;
 
@@ -62,19 +73,12 @@ function initStatusBar() {
     bar.className = "app-status-bar";
     bar.setAttribute("data-app-status-bar", "");
     bar.setAttribute("role", "region");
-    bar.setAttribute("aria-label", "Barra de status e navegação");
+    bar.setAttribute("aria-label", "Parceiros de delivery");
     header.appendChild(bar);
   }
 
   bar.innerHTML = `
     <div class="container app-status-bar__inner">
-      <div class="app-status-bar__meta" aria-live="polite">
-        <span class="status-pill is-online" data-status-online title="Status da conexão">
-          <span class="status-dot" aria-hidden="true"></span>
-          <span data-status-online-label>Online</span>
-        </span>
-        <span class="status-pill is-mode" data-status-mode title="Modo de exibição">Web</span>
-      </div>
       <div class="app-status-bar__partners" role="list" aria-label="Parceiros de delivery">
         <a class="partner-link" href="https://www.ifood.com.br" target="_blank" rel="noopener noreferrer" role="listitem" title="iFood" aria-label="iFood">
           <span class="partner-mark partner-mark--ifood">
@@ -92,53 +96,21 @@ function initStatusBar() {
           </span>
         </a>
       </div>
-      <div class="app-status-bar__actions" role="toolbar" aria-label="Atalhos do app">
-        <button type="button" class="status-action is-install" data-install-app title="Baixar ou instalar o app">Baixar app</button>
-        <button type="button" class="status-action" data-a11y-text aria-pressed="false">Texto maior</button>
-      </div>
     </div>
     <div class="container" data-install-hint hidden>
       <p class="status-hint" role="status"></p>
     </div>
   `;
 
-  const onlinePill = bar.querySelector("[data-status-online]");
-  const onlineLabel = bar.querySelector("[data-status-online-label]");
-  const modePill = bar.querySelector("[data-status-mode]");
-  const textBtn = bar.querySelector("[data-a11y-text]");
-  const installBtn = bar.querySelector("[data-install-app]");
+  const installBtns = document.querySelectorAll("[data-install-app]");
   const hintWrap = bar.querySelector("[data-install-hint]");
   const hintText = hintWrap?.querySelector(".status-hint");
-
-  const setOnline = (online) => {
-    onlinePill.classList.toggle("is-online", online);
-    onlinePill.classList.toggle("is-offline", !online);
-    onlineLabel.textContent = online ? "Online" : "Offline";
-    onlinePill.title = online ? "Conectado à internet" : "Sem conexão";
-  };
-
-  setOnline(navigator.onLine);
-  window.addEventListener("online", () => setOnline(true));
-  window.addEventListener("offline", () => setOnline(false));
 
   const isApp =
     window.matchMedia("(display-mode: standalone)").matches ||
     window.navigator.standalone === true;
-  modePill.textContent = isApp ? "App" : "Web";
 
-  const applyText = (on) => {
-    document.documentElement.classList.toggle("a11y-large-text", on);
-    textBtn.classList.toggle("is-active", on);
-    textBtn.setAttribute("aria-pressed", String(on));
-    localStorage.setItem(TEXT_KEY, on ? "large" : "normal");
-  };
-
-  document.documentElement.classList.remove("a11y-contrast");
-  applyText(localStorage.getItem(TEXT_KEY) === "large");
-
-  textBtn.addEventListener("click", () => {
-    applyText(!document.documentElement.classList.contains("a11y-large-text"));
-  });
+  document.documentElement.classList.remove("a11y-contrast", "a11y-large-text");
 
   let deferredPrompt = null;
   let hintTimer = null;
@@ -158,24 +130,38 @@ function initStatusBar() {
     deferredPrompt = event;
   });
 
-  installBtn.addEventListener("click", async () => {
-    if (deferredPrompt) {
-      deferredPrompt.prompt();
-      const choice = await deferredPrompt.userChoice;
-      if (choice.outcome === "accepted") {
-        deferredPrompt = null;
+  installBtns.forEach((installBtn) => {
+    installBtn.addEventListener("click", async (event) => {
+      if (deferredPrompt) {
+        event.preventDefault();
+        deferredPrompt.prompt();
+        const choice = await deferredPrompt.userChoice;
+        if (choice.outcome === "accepted") {
+          deferredPrompt = null;
+        }
+        return;
       }
-      return;
-    }
-    const isIos = /iphone|ipad|ipod/i.test(navigator.userAgent);
-    showHint(
-      isIos
-        ? "No iPhone: toque em Compartilhar e depois em “Adicionar à Tela de Início”."
-        : isApp
-          ? "O app Dahora já está instalado neste dispositivo."
-          : "Use o menu do navegador → “Instalar app” ou “Adicionar à tela inicial”."
-    );
+      const target = installBtn.getAttribute("href");
+      if (target && target.startsWith("#") && document.querySelector(target)) {
+        return;
+      }
+      if (target && target.includes("#app-download")) {
+        return;
+      }
+      event.preventDefault();
+      const isIos = /iphone|ipad|ipod/i.test(navigator.userAgent);
+      showHint(
+        isIos
+          ? "No iPhone: toque em Compartilhar e depois em “Adicionar à Tela de Início”."
+          : isApp
+            ? "O app Dahora já está instalado neste dispositivo."
+            : "Use o menu do navegador → “Instalar app” ou “Adicionar à tela inicial”."
+      );
+    });
   });
+
+  syncHeaderOffset();
+  window.addEventListener("resize", syncHeaderOffset, { passive: true });
 }
 
 /* ---------- Banner flutuante de anúncio ---------- */
@@ -661,12 +647,361 @@ function initAppQr() {
   );
 }
 
+/* ---------- WhatsApp SAC (flutuante + header) ---------- */
+const WHATSAPP_SAC = {
+  phone: "551140020024",
+  message: "Olá! Preciso de atendimento do SAC 24h da Dahora Atacadista.",
+};
+
+function getWhatsAppSacUrl() {
+  const text = encodeURIComponent(WHATSAPP_SAC.message);
+  return `https://wa.me/${WHATSAPP_SAC.phone}?text=${text}`;
+}
+
+function openWhatsAppSac() {
+  window.open(getWhatsAppSacUrl(), "_blank", "noopener,noreferrer");
+}
+
+function initWhatsApp() {
+  if (!document.querySelector("[data-whatsapp-fab]")) {
+    const fab = document.createElement("a");
+    fab.className = "whatsapp-fab";
+    fab.href = getWhatsAppSacUrl();
+    fab.target = "_blank";
+    fab.rel = "noopener noreferrer";
+    fab.setAttribute("data-whatsapp-fab", "");
+    fab.setAttribute("aria-label", "Falar com o SAC 24h no WhatsApp");
+    fab.title = "SAC 24h no WhatsApp";
+    fab.innerHTML = `
+      <svg viewBox="0 0 32 32" width="28" height="28" aria-hidden="true">
+        <path fill="currentColor" d="M16.004 3.2A12.78 12.78 0 0 0 3.2 15.98c0 2.25.6 4.44 1.74 6.37L3.2 28.8l6.64-1.74a12.76 12.76 0 0 0 6.16 1.57h.01c7.05 0 12.79-5.74 12.79-12.8S23.05 3.2 16.004 3.2zm0 23.36h-.01a10.55 10.55 0 0 1-5.38-1.47l-.39-.23-3.94 1.03 1.05-3.84-.25-.4a10.56 10.56 0 0 1-1.62-5.64c0-5.84 4.76-10.59 10.61-10.59 5.84 0 10.59 4.75 10.59 10.59-.01 5.85-4.76 10.55-10.66 10.55zm5.82-7.93c-.32-.16-1.88-.93-2.17-1.03-.29-.11-.5-.16-.71.16-.21.32-.82 1.03-1 1.24-.18.21-.37.24-.69.08-.32-.16-1.34-.49-2.55-1.57-.94-.84-1.58-1.88-1.76-2.2-.18-.32-.02-.49.14-.65.14-.14.32-.37.48-.55.16-.18.21-.32.32-.53.11-.21.05-.4-.03-.55-.08-.16-.71-1.71-.97-2.34-.26-.63-.52-.53-.71-.54h-.6c-.21 0-.55.08-.84.4-.29.32-1.1 1.08-1.1 2.63s1.13 3.05 1.29 3.26c.16.21 2.22 3.39 5.38 4.75.75.32 1.34.52 1.8.66.76.24 1.45.2 2 .12.61-.09 1.88-.77 2.15-1.51.26-.74.26-1.38.18-1.51-.08-.13-.29-.21-.61-.37z"/>
+      </svg>
+      <span class="whatsapp-fab__label">WhatsApp</span>
+    `;
+    document.body.appendChild(fab);
+  }
+
+  const headerSacLinks = document.querySelectorAll(
+    ".nav-desktop a[href*='sac'], .nav-mobile a[href*='sac']"
+  );
+  headerSacLinks.forEach((link) => {
+    link.setAttribute("data-whatsapp-sac", "");
+    link.addEventListener("click", (event) => {
+      event.preventDefault();
+      openWhatsAppSac();
+    });
+  });
+}
+
+/* ---------- Voltar ao topo ---------- */
+function getScrollY() {
+  return (
+    window.pageYOffset ||
+    window.scrollY ||
+    document.documentElement.scrollTop ||
+    document.body.scrollTop ||
+    0
+  );
+}
+
+function initBackToTop() {
+  let btn = document.querySelector("[data-back-to-top]");
+  if (!btn) {
+    btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = "back-to-top";
+    btn.setAttribute("data-back-to-top", "");
+    btn.setAttribute("aria-label", "Voltar ao topo");
+    btn.title = "Voltar ao topo";
+    btn.innerHTML = `
+      <span class="back-to-top__icon" aria-hidden="true">↑</span>
+      <span class="back-to-top__label">Topo</span>
+    `;
+  }
+
+  document.body.appendChild(btn);
+
+  const sync = () => {
+    const show = getScrollY() > 120;
+    btn.classList.toggle("is-visible", show);
+    btn.hidden = false;
+    btn.setAttribute("aria-hidden", show ? "false" : "true");
+  };
+
+  let ticking = false;
+  const onScroll = () => {
+    if (ticking) return;
+    ticking = true;
+    window.requestAnimationFrame(() => {
+      sync();
+      ticking = false;
+    });
+  };
+
+  btn.addEventListener("click", (event) => {
+    event.preventDefault();
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    window.scrollTo({ top: 0, left: 0, behavior: reduceMotion ? "auto" : "smooth" });
+    document.documentElement.scrollTop = 0;
+    document.body.scrollTop = 0;
+  });
+
+  sync();
+  window.addEventListener("scroll", onScroll, { passive: true });
+  document.addEventListener("scroll", onScroll, { passive: true, capture: true });
+  window.addEventListener("touchmove", onScroll, { passive: true });
+  window.addEventListener("resize", sync, { passive: true });
+}
+
+/* ---------- Shell responsivo (mobile / tablet / app) ---------- */
+function detectDevice() {
+  const w = window.innerWidth;
+  if (w < 768) return "mobile";
+  if (w < 1100) return "tablet";
+  return "desktop";
+}
+
+function isStandaloneApp() {
+  return (
+    window.matchMedia("(display-mode: standalone)").matches ||
+    window.navigator.standalone === true
+  );
+}
+
+function initAppShell() {
+  const root = document.documentElement;
+
+  const applyDevice = () => {
+    const device = detectDevice();
+    const standalone = isStandaloneApp();
+    const appShell = device !== "desktop" || standalone;
+
+    root.dataset.device = device;
+    root.classList.toggle("is-mobile", device === "mobile");
+    root.classList.toggle("is-tablet", device === "tablet");
+    root.classList.toggle("is-desktop", device === "desktop");
+    root.classList.toggle("is-standalone", standalone);
+    root.classList.toggle("is-app-shell", appShell);
+    document.body.classList.toggle("has-app-nav", device !== "desktop");
+  };
+
+  const ensureBottomNav = () => {
+    let nav = document.querySelector("[data-app-nav]");
+
+    if (!document.body.classList.contains("has-app-nav")) {
+      if (nav) nav.hidden = true;
+      return;
+    }
+
+    if (!nav) {
+      const file = window.location.pathname.split("/").pop() || "index.html";
+      const isHome = file === "" || file === "index.html";
+      const faq = isHome ? "#faq" : "index.html#faq";
+      const app = isHome ? "#app-download" : "index.html#app-download";
+
+      nav = document.createElement("nav");
+      nav.className = "app-bottom-nav";
+      nav.setAttribute("data-app-nav", "");
+      nav.setAttribute("aria-label", "Navegação do aplicativo");
+      nav.innerHTML = `
+        <a class="app-bottom-nav__item" href="index.html" data-nav="home">
+          <span class="app-bottom-nav__icon" aria-hidden="true">⌂</span>
+          <span>Início</span>
+        </a>
+        <a class="app-bottom-nav__item" href="${app}" data-nav="app" data-install-app>
+          <span class="app-bottom-nav__icon" aria-hidden="true">↓</span>
+          <span>App</span>
+        </a>
+        <a class="app-bottom-nav__item" href="${faq}" data-nav="faq">
+          <span class="app-bottom-nav__icon" aria-hidden="true">?</span>
+          <span>FAQ</span>
+        </a>
+        <button type="button" class="app-bottom-nav__item" data-nav="sac" data-whatsapp-fab-trigger>
+          <span class="app-bottom-nav__icon" aria-hidden="true">☎</span>
+          <span>SAC</span>
+        </button>
+        <a class="app-bottom-nav__item" href="area-cliente.html" data-nav="cliente">
+          <span class="app-bottom-nav__icon" aria-hidden="true">◎</span>
+          <span>Conta</span>
+        </a>
+      `;
+      document.body.appendChild(nav);
+      nav.querySelector("[data-whatsapp-fab-trigger]")?.addEventListener("click", () => {
+        openWhatsAppSac();
+      });
+    }
+
+    nav.hidden = false;
+
+    const file = (window.location.pathname.split("/").pop() || "index.html").toLowerCase();
+    const hash = window.location.hash;
+    nav.querySelectorAll(".app-bottom-nav__item").forEach((el) => el.classList.remove("is-active"));
+    if (file.includes("area-cliente")) {
+      nav.querySelector('[data-nav="cliente"]')?.classList.add("is-active");
+    } else if (hash === "#faq") {
+      nav.querySelector('[data-nav="faq"]')?.classList.add("is-active");
+    } else if (hash === "#app-download") {
+      nav.querySelector('[data-nav="app"]')?.classList.add("is-active");
+    } else if (!file || file === "index.html") {
+      nav.querySelector('[data-nav="home"]')?.classList.add("is-active");
+    }
+  };
+
+  const sync = () => {
+    applyDevice();
+    ensureBottomNav();
+    syncHeaderOffset();
+  };
+
+  sync();
+  window.addEventListener("resize", sync, { passive: true });
+  window.addEventListener("orientationchange", sync, { passive: true });
+}
+
+/* ---------- Orientação / acessibilidade em páginas internas ---------- */
+function isHomePage() {
+  const file = (window.location.pathname.split("/").pop() || "index.html").toLowerCase();
+  return file === "" || file === "index.html" || file === "/";
+}
+
+function initPageOrientation() {
+  if (isHomePage()) return;
+
+  if (!document.querySelector(".skip-link")) {
+    const skip = document.createElement("a");
+    skip.className = "skip-link";
+    skip.href = "#conteudo";
+    skip.textContent = "Ir para o conteúdo";
+    document.querySelector(".layout")?.prepend(skip);
+  }
+
+  const main = document.querySelector("main");
+  if (main && !main.id) main.id = "conteudo";
+
+  const hero = document.querySelector(".page-hero .container");
+  if (!hero || hero.querySelector("[data-page-trail]")) return;
+
+  const pageTitleRaw =
+    document.querySelector(".page-hero h1")?.textContent?.trim() ||
+    document.title.replace(/\s*·\s*Dahora.*$/i, "").trim() ||
+    "Página atual";
+  const pageTitle = pageTitleRaw
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;");
+
+  const trail = document.createElement("nav");
+  trail.className = "page-trail";
+  trail.setAttribute("data-page-trail", "");
+  trail.setAttribute("aria-label", "Navegação da página");
+  trail.innerHTML = `
+    <a class="page-back" href="index.html">
+      <span class="page-back__icon" aria-hidden="true">←</span>
+      Voltar para a home
+    </a>
+    <ol class="page-crumbs">
+      <li><a href="index.html">Home</a></li>
+      <li aria-current="page">${pageTitle}</li>
+    </ol>
+  `;
+  hero.prepend(trail);
+}
+
+/* ---------- Cookies / consentimento ---------- */
+const COOKIE_KEY = "dahora-cookie-consent";
+
+function getCookieConsent() {
+  try {
+    return localStorage.getItem(COOKIE_KEY);
+  } catch {
+    return null;
+  }
+}
+
+function setCookieConsent(value) {
+  try {
+    localStorage.setItem(COOKIE_KEY, value);
+  } catch {
+    /* ignore */
+  }
+  document.documentElement.dataset.cookieConsent = value;
+  document.dispatchEvent(
+    new CustomEvent("dahora:cookie-consent", { detail: { value } })
+  );
+}
+
+function hideCookieBanner() {
+  document.querySelector("[data-cookie-banner]")?.remove();
+}
+
+function showCookieBanner() {
+  if (document.querySelector("[data-cookie-banner]")) return;
+
+  const banner = document.createElement("aside");
+  banner.className = "cookie-banner";
+  banner.setAttribute("data-cookie-banner", "");
+  banner.setAttribute("role", "dialog");
+  banner.setAttribute("aria-label", "Preferências de cookies");
+  banner.setAttribute("aria-live", "polite");
+  banner.innerHTML = `
+    <p class="cookie-banner__title">Cookies e privacidade</p>
+    <p class="cookie-banner__text">
+      Usamos cookies essenciais para o site funcionar e, com seu consentimento,
+      cookies para análise e ofertas. Veja a
+      <a href="cookies.html">Política de Cookies</a> e a
+      <a href="privacidade.html">Política de Privacidade</a>.
+    </p>
+    <div class="cookie-banner__actions">
+      <button type="button" class="btn btn-primary" data-cookie-accept>Aceitar todos</button>
+      <button type="button" class="btn btn-secondary" data-cookie-essential>Só essenciais</button>
+      <a class="btn btn-secondary" href="cookies.html">Saiba mais</a>
+    </div>
+  `;
+  document.body.appendChild(banner);
+
+  banner.querySelector("[data-cookie-accept]")?.addEventListener("click", () => {
+    setCookieConsent("all");
+    hideCookieBanner();
+  });
+  banner.querySelector("[data-cookie-essential]")?.addEventListener("click", () => {
+    setCookieConsent("essential");
+    hideCookieBanner();
+  });
+}
+
+function initCookieConsent() {
+  const current = getCookieConsent();
+  if (current) {
+    document.documentElement.dataset.cookieConsent = current;
+  } else {
+    showCookieBanner();
+  }
+
+  document.querySelectorAll("[data-cookie-reset]").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      try {
+        localStorage.removeItem(COOKIE_KEY);
+      } catch {
+        /* ignore */
+      }
+      delete document.documentElement.dataset.cookieConsent;
+      showCookieBanner();
+    });
+  });
+}
+
 document.addEventListener("DOMContentLoaded", () => {
+  initAppShell();
   initMenu();
   initYear();
   initStatusBar();
+  initPageOrientation();
+  initCookieConsent();
   initFloatAnnounce();
   initAppQr();
+  initWhatsApp();
+  initBackToTop();
   initMasks();
   initFaq();
   initCarousel();

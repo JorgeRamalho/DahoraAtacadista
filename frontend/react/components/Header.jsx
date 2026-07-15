@@ -15,14 +15,14 @@ function Header() {
         <nav className="nav-desktop" aria-label="Principal">
           <a href="../index.html">Início HTML</a>
           <a href="../cadastro.html">Cadastro</a>
-          <a href="../faq.html">FAQ</a>
+          <a href="../index.html#faq">FAQ</a>
           <a href="../sac.html">SAC 24h</a>
           <a href="index.html" aria-current="page">React</a>
         </nav>
 
         <div className="header-actions">
           <a className="btn btn-secondary" href="../area-cliente.html">Entrar</a>
-          <a className="btn btn-primary" href="../cadastro.html">Pedir cartão</a>
+          <a className="btn btn-primary" href="../area-cliente.html">Área do Cliente</a>
         </div>
 
         <button
@@ -40,10 +40,10 @@ function Header() {
           <div className="container">
             <a href="../index.html">Início HTML</a>
             <a href="../cadastro.html">Cadastro</a>
-            <a href="../faq.html">FAQ</a>
+            <a href="../index.html#faq">FAQ</a>
             <a href="../sac.html">SAC</a>
             <div className="mobile-actions">
-              <a className="btn btn-primary" href="../cadastro.html">Pedir cartão</a>
+              <a className="btn btn-primary" href="../area-cliente.html">Área do Cliente</a>
             </div>
           </div>
         </div>

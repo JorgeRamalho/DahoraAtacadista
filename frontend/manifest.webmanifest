@@ -1,0 +1,21 @@
+{
+  "name": "Dahora Atacadista",
+  "short_name": "Dahora",
+  "description": "Preço de verdade. Compra com inteligência. Rede de supermercados e atacado.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#fff8f2",
+  "theme_color": "#c2410c",
+  "lang": "pt-BR",
+  "categories": ["shopping", "business"],
+  "icons": [
+    {
+      "src": "./favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}

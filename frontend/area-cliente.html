@@ -1,31 +1,65 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="pt-BR">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+    />
+    <meta name="theme-color" content="#c2410c" />
     <title>Área do Cliente · Dahora</title>
-    <link rel="stylesheet" href="css/style.css?v=status-bar-1" />
+    <link rel="icon" href="favicon.svg?v=dh-1" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="favicon.svg?v=dh-1" />
+    <link rel="stylesheet" href="css/style.css?v=topo-all-1" />
   </head>
   <body>
     <div class="layout">
       <header class="site-header">
         <div class="container header-inner">
-          <a class="logo" href="index.html">
+          <a class="logo" href="index.html" aria-label="Dahora — página inicial">
             <span class="logo-mark">DH</span>
-            <span class="logo-text"><strong>Dahora</strong><span>Atacadista</span></span>
+            <span class="logo-text">
+              <strong>Dahora</strong>
+              <span>Atacadista</span>
+            </span>
           </a>
+
           <nav class="nav-desktop" aria-label="Principal">
-            <a href="index.html">Início</a>
-            <a href="index.html#cadastro">Cadastro</a>
-            <a href="area-cliente.html" aria-current="page">Área do Cliente</a>
-            <a href="sac.html">SAC 24h</a>
+            <a href="index.html#app-download" data-install-app>Baixar app</a>
+            <a href="index.html">Nossa História</a>
+            <a href="index.html#faq">FAQ</a>
+            <a href="dahora-card.html">Dahora Card</a>
+            <a href="dahora-club.html">Dahora Club</a>
           </nav>
-          <button class="menu-toggle" type="button" data-menu-toggle aria-expanded="false">☰</button>
+
+          <div class="header-actions">
+            <a class="btn btn-secondary" href="index.html#cadastro">Cadastrar</a>
+            <a class="btn btn-primary" href="area-cliente.html" aria-current="page">Área do Cliente</a>
+          </div>
+
+          <button
+            class="menu-toggle"
+            type="button"
+            data-menu-toggle
+            aria-expanded="false"
+            aria-controls="menu-mobile"
+            aria-label="Abrir menu"
+          >
+            ☰
+          </button>
         </div>
-        <div class="nav-mobile" data-menu-panel>
+
+        <div class="nav-mobile" id="menu-mobile" data-menu-panel>
           <div class="container">
-            <a href="area-cliente.html">Área do Cliente</a>
-            <a href="index.html#cadastro">Cadastro</a>
+            <a href="index.html#app-download" data-install-app>Baixar app</a>
+            <a href="index.html">Nossa História</a>
+            <a href="index.html#faq">FAQ</a>
+            <a href="dahora-card.html">Dahora Card</a>
+            <a href="dahora-club.html">Dahora Club</a>
+            <div class="mobile-actions">
+              <a class="btn btn-secondary" href="index.html#cadastro">Cadastrar</a>
+              <a class="btn btn-primary" href="area-cliente.html" aria-current="page">Área do Cliente</a>
+            </div>
           </div>
         </div>
       </header>
@@ -36,12 +70,7 @@
             <p class="eyebrow">Acesso seguro</p>
             <h1>Área do Cliente</h1>
             <p>
-              Entre com o e-mail e a senha do cadastro do Dahora Card. O dashboard completo
-              com cartão e pontos fica em
-              <a href="http://localhost:3000/area-cliente" style="color:var(--dahora-forest);font-weight:600;text-decoration:underline">localhost:3000/area-cliente</a>
-              — cadastro completo com PostgreSQL em
-              <a href="http://localhost:3000/cadastro" style="color:var(--dahora-forest);font-weight:600;text-decoration:underline">/cadastro</a>
-              após o login.
+              Entre com o e-mail e a senha do cadastro do Dahora Card.
             </p>
           </div>
         </section>
@@ -76,9 +105,19 @@
       <footer class="site-footer">
         <div class="container footer-bottom">
           <p>© <span data-year></span> Dahora Atacadista</p>
+          <p>
+            <a href="privacidade.html">Privacidade</a> ·
+            <a href="cookies.html">Cookies</a> ·
+            <button type="button" class="linkish" data-cookie-reset>Gerenciar cookies</button>
+          </p>
         </div>
       </footer>
     </div>
-    <script src="js/script.js?v=status-bar-1"></script>
+    <script src="js/script.js?v=topo-all-1"></script>
+  
+    <button type="button" class="back-to-top" data-back-to-top aria-label="Voltar ao topo" title="Voltar ao topo">
+      <span class="back-to-top__icon" aria-hidden="true">↑</span>
+      <span class="back-to-top__label">Topo</span>
+    </button>
   </body>
 </html>

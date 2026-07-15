@@ -2,14 +2,24 @@
 <html lang="pt-BR">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+    />
+    <meta name="theme-color" content="#c2410c" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="apple-mobile-web-app-title" content="Dahora" />
+    <link rel="manifest" href="manifest.webmanifest" />
     <meta
       name="description"
       content="Dahora Atacadista — Preço de verdade. Compra com inteligência. Rede de supermercados e atacado."
     />
     <title>Dahora — Preço de verdade. Compra com inteligência.</title>
-    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop stop-color='%23c2410c'/%3E%3Cstop offset='.55' stop-color='%23ea580c'/%3E%3Cstop offset='1' stop-color='%23f59e0b'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='64' height='64' rx='16' fill='url(%23g)'/%3E%3Ctext x='32' y='40' text-anchor='middle' fill='white' font-size='20' font-family='sans-serif' font-weight='700'%3EDH%3C/text%3E%3C/svg%3E" />
-    <link rel="stylesheet" href="css/style.css?v=app-download-2" />
+    <link rel="icon" href="favicon.svg?v=dh-1" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="favicon.svg?v=dh-1" />
+    <link rel="stylesheet" href="css/style.css?v=topo-all-1" />
   </head>
   <body>
     <div class="layout">
@@ -26,17 +36,16 @@
           </a>
 
           <nav class="nav-desktop" aria-label="Principal">
-            <a href="index.html" aria-current="page">Início</a>
+            <a href="#app-download" data-install-app>Baixar app</a>
+            <a href="index.html" aria-current="page">Nossa História</a>
+            <a href="#faq">FAQ</a>
             <a href="dahora-card.html">Dahora Card</a>
-            <a href="faq.html">FAQ</a>
-            <a href="tire-sua-duvida.html">Tire sua dúvida</a>
-            <a href="sac.html">SAC 24h</a>
-            <a href="area-cliente.html">Área do Cliente</a>
+            <a href="dahora-club.html">Dahora Club</a>
           </nav>
 
           <div class="header-actions">
-            <a class="btn btn-secondary" href="area-cliente.html">Entrar</a>
-            <a class="btn btn-primary" href="#cadastro">Pedir cartão</a>
+            <a class="btn btn-secondary" href="#cadastro">Cadastrar</a>
+            <a class="btn btn-primary" href="area-cliente.html">Área do Cliente</a>
           </div>
 
           <button
@@ -53,15 +62,14 @@
 
         <div class="nav-mobile" id="menu-mobile" data-menu-panel>
           <div class="container">
-            <a href="index.html">Início</a>
+            <a href="#app-download" data-install-app>Baixar app</a>
+            <a href="index.html" aria-current="page">Nossa História</a>
+            <a href="#faq">FAQ</a>
             <a href="dahora-card.html">Dahora Card</a>
-            <a href="faq.html">FAQ</a>
-            <a href="tire-sua-duvida.html">Tire sua dúvida</a>
-            <a href="sac.html">SAC 24h</a>
-            <a href="area-cliente.html">Área do Cliente</a>
+            <a href="dahora-club.html">Dahora Club</a>
             <div class="mobile-actions">
-              <a class="btn btn-secondary" href="area-cliente.html">Entrar</a>
-              <a class="btn btn-primary" href="#cadastro">Pedir cartão</a>
+              <a class="btn btn-secondary" href="#cadastro">Cadastrar</a>
+              <a class="btn btn-primary" href="area-cliente.html">Área do Cliente</a>
             </div>
           </div>
         </div>
@@ -130,7 +138,26 @@
           <div class="carousel-dots" data-carousel-dots></div>
         </section>
 
-        <section class="section section-white" aria-labelledby="app-download-title">
+        <aside class="club-status-bar" aria-label="Dahora Club">
+          <div class="container club-status-bar__inner">
+            <div class="club-status-bar__items" role="list">
+              <a class="club-icon" href="dahora-club.html" role="listitem" title="Dahora Pontos">
+                <span class="club-icon__mark" aria-hidden="true">★</span>
+                <span class="club-icon__label">Dahora Pontos</span>
+              </a>
+              <a class="club-icon" href="dahora-club.html" role="listitem" title="Dahora Milhas">
+                <span class="club-icon__mark" aria-hidden="true">↗</span>
+                <span class="club-icon__label">Dahora Milhas</span>
+              </a>
+              <a class="club-icon" href="dahora-club.html" role="listitem" title="Dahora Ofertas">
+                <span class="club-icon__mark" aria-hidden="true">◇</span>
+                <span class="club-icon__label">Dahora Ofertas</span>
+              </a>
+            </div>
+          </div>
+        </aside>
+
+        <section class="section section-white" id="app-download" aria-labelledby="app-download-title">
           <div class="container">
             <div class="app-download">
               <div class="app-download__copy">
@@ -302,6 +329,36 @@
         </section>
 
 
+
+        <section class="section" id="faq" aria-labelledby="faq-title">
+          <div class="container max-form">
+            <p class="eyebrow">Central de ajuda</p>
+            <h2 id="faq-title">FAQ Perguntas e Respostas</h2>
+            <p class="muted mt-2" style="max-width: 36rem; margin-bottom: 1.5rem">
+              Respostas claras sobre cartão, pontos, conta e atendimento.
+            </p>
+            <div class="faq-controls">
+              <label class="sr-only" for="faq-busca">Buscar</label>
+              <input
+                id="faq-busca"
+                class="field"
+                data-faq-search
+                placeholder="Buscar pergunta ou resposta…"
+                style="padding:0.85rem 1rem;border-radius:0.875rem;border:1.5px solid var(--dahora-line);width:100%;font:inherit"
+              />
+              <label class="sr-only" for="faq-cat">Categoria</label>
+              <select
+                id="faq-cat"
+                data-faq-filter
+                style="padding:0.85rem 1rem;border-radius:0.875rem;border:1.5px solid var(--dahora-line);width:100%;font:inherit;background:#fff"
+              ></select>
+            </div>
+            <div data-faq-list></div>
+            <div class="mt-4" style="display:flex;flex-wrap:wrap;gap:0.75rem">
+              <a class="btn btn-secondary" href="sac.html">Abrir chamado SAC</a>
+            </div>
+          </div>
+        </section>
 
         <section class="section section-white" id="cadastro" aria-labelledby="home-cadastro-title">
           <div class="container max-form">
@@ -480,7 +537,7 @@
 
               <label class="check mb-2">
                 <input type="checkbox" name="aceiteTermos" required />
-                <span>Li e aceito o tratamento dos meus dados pessoais conforme a LGPD para emissão do Dahora Card. *</span>
+                <span>Li e aceito o tratamento dos meus dados pessoais conforme a <a href="privacidade.html">Política de Privacidade</a> e a LGPD para emissão do Dahora Card. *</span>
               </label>
               <p class="field-error" data-field-error="aceiteTermos" hidden></p>
               <label class="check mb-2">
@@ -513,8 +570,11 @@
             <ul>
               <li><a href="index.html">Início</a></li>
               <li><a href="dahora-card.html">Dahora Card</a></li>
-              <li><a href="faq.html">FAQ</a></li>
+              <li><a href="dahora-club.html">Dahora Club</a></li>
+              <li><a href="#faq">FAQ</a></li>
               <li><a href="sac.html">SAC 24h</a></li>
+              <li><a href="privacidade.html">Privacidade</a></li>
+              <li><a href="cookies.html">Cookies</a></li>
             </ul>
           </div>
           <div>
@@ -536,11 +596,26 @@
         </div>
         <div class="container footer-bottom">
           <p>© <span data-year></span> Dahora Atacadista. Todos os direitos reservados.</p>
-          <p>Dados tratados conforme LGPD.</p>
+          <p>
+            <a href="privacidade.html">Política de Privacidade</a> ·
+            <a href="cookies.html">Cookies</a> ·
+            <button type="button" class="linkish" data-cookie-reset>Gerenciar cookies</button>
+          </p>
         </div>
       </footer>
     </div>
 
-    <script src="js/script.js?v=app-download-1"></script>
+    <button
+      type="button"
+      class="back-to-top"
+      data-back-to-top
+      aria-label="Voltar ao topo"
+      title="Voltar ao topo"
+    >
+      <span class="back-to-top__icon" aria-hidden="true">↑</span>
+      <span class="back-to-top__label">Topo</span>
+    </button>
+
+    <script src="js/script.js?v=topo-all-1"></script>
   </body>
 </html>

@@ -24,7 +24,7 @@ function Footer() {
           <h2>Páginas</h2>
           <ul>
             <li><a href="../cadastro.html">Cadastro</a></li>
-            <li><a href="../faq.html">FAQ</a></li>
+            <li><a href="../index.html#faq">FAQ</a></li>
             <li><a href="../sac.html">SAC</a></li>
           </ul>
         </div>

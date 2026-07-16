@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import Link from "next/link";
 
 type FaqItem = {
   id: string;
@@ -64,9 +65,9 @@ export function FaqList({ items }: { items: FaqItem[] }) {
       {filtered.length === 0 ? (
         <p className="rounded-2xl bg-dahora-mist px-5 py-8 text-center text-dahora-slate">
           Nenhuma pergunta encontrada. Tente outro termo ou{" "}
-          <a href="/tire-sua-duvida" className="font-semibold text-dahora-forest underline">
+          <Link href="/tire-sua-duvida" className="font-semibold text-dahora-forest underline">
             envie sua dúvida
-          </a>
+          </Link>
           .
         </p>
       ) : (

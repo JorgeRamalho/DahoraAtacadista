@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 
 export function DuvidaForm() {
   const [nome, setNome] = useState("");
@@ -45,9 +46,9 @@ export function DuvidaForm() {
         <p className="mt-2 text-dahora-slate">
           Nossa equipe responde em até 24 horas no e-mail informado. Enquanto isso,
           confira o{" "}
-          <a href="/faq" className="font-semibold text-dahora-forest underline">
+          <Link href="/faq" className="font-semibold text-dahora-forest underline">
             FAQ
-          </a>
+          </Link>
           .
         </p>
         <button type="button" className="btn-secondary mt-6" onClick={() => setDone(false)}>

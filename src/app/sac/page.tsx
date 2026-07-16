@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { PageHero } from "@/components/ui/PageHero";
 import { SacForm } from "@/components/sac/SacForm";
 import { brand } from "@/lib/brand";
@@ -50,9 +51,9 @@ export default function SacPage() {
                 Faça login na Área do Cliente para vincular o chamado à sua conta e
                 acompanhar o status.
               </p>
-              <a href="/area-cliente" className="btn-primary mt-5 !bg-white !text-dahora-forest !shadow-none">
+              <Link href="/area-cliente" className="btn-primary mt-5 !bg-white !text-dahora-forest !shadow-none">
                 Área do Cliente
-              </a>
+              </Link>
             </div>
           </aside>
         </div>

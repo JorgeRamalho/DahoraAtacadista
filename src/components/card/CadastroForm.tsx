@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import {
   formatCep,
   formatCpf,
@@ -196,9 +197,9 @@ export function CadastroForm() {
         <p className="mt-2 text-sm text-dahora-slate">
           Bônus de boas-vindas: 100 pontos · status ativo
         </p>
-        <a href="/area-cliente" className="btn-primary mt-8 inline-flex">
+        <Link href="/area-cliente" className="btn-primary mt-8 inline-flex">
           Ir para Área do Cliente
-        </a>
+        </Link>
       </div>
     );
   }

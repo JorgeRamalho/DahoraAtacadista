@@ -40,6 +40,14 @@ Ou use um servidor estático na pasta `frontend`:
 npx serve frontend
 ```
 
+## GitHub Pages
+
+A pasta `frontend/` é a origem do site em `https://jorgeramalho.github.io/DahoraAtacadista/`.
+
+No GitHub: **Settings → Pages → Source = GitHub Actions**. O workflow na raiz do repo faz o deploy automático a cada push em `main` que altere `frontend/`.
+
+Em produção estática, `script.js` **não** chama `127.0.0.1:3000`. Formulários mostram aviso até existir API pública (Next + banco).
+
 ## Relação com o Next.js
 
 | Pasta | Função |

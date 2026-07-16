@@ -3,24 +3,49 @@
  * Navegação, máscaras, FAQ e utilitários do front
  */
 
+function isLoopbackHost() {
+  const host = window.location.hostname;
+  return host === "localhost" || host === "127.0.0.1" || host === "[::1]";
+}
+
+/**
+ * null  → hospedagem estática (GitHub Pages / Netlify) sem API Next
+ * ""    → mesma origem (Next na porta 3000)
+ * url   → Next em outro host (local ou DAHORA_API_BASE)
+ */
 function resolveApiBase() {
   if (typeof window === "undefined") return "http://127.0.0.1:3000";
   if (window.DAHORA_API_BASE) return window.DAHORA_API_BASE;
   // Já no Next (porta 3000): mesma origem
   if (window.location.port === "3000") return "";
 
-  // Front estático (Live Server etc.): preferir loopback.
-  // Usar o IP da LAN (ex.: 192.168.x.x:3000) no mesmo PC costuma travar
-  // no firewall do Windows; 127.0.0.1 responde normalmente.
+  // Front estático local (Live Server etc.): API no loopback.
   // Em outro dispositivo na Wi‑Fi, defina window.DAHORA_API_BASE antes do script.
-  return "http://127.0.0.1:3000";
+  if (isLoopbackHost()) return "http://127.0.0.1:3000";
+
+  // github.io, Netlify, etc.: só o HTML — sem backend nesta origem
+  return null;
 }
 
 const API_BASE = resolveApiBase();
+const API_AVAILABLE = API_BASE !== null;
 
-/** URL absoluta do app Next (mesmo host da API), evita perder sessão com localhost fixo. */
+const STATIC_APP_PATHS = {
+  "/area-cliente": "area-cliente.html",
+  "/cadastro": "index.html#cadastro",
+  "/faq": "index.html#faq",
+  "/sac": "sac.html",
+  "/dahora-card": "dahora-card.html",
+  "/dahora-club": "dahora-club.html",
+  "/tire-sua-duvida": "tire-sua-duvida.html",
+};
+
+/** URL do app Next (com API) ou equivalente .html no site estático. */
 function appUrl(path) {
   const normalized = path.startsWith("/") ? path : `/${path}`;
+  if (!API_AVAILABLE) {
+    return STATIC_APP_PATHS[normalized] || `${normalized.replace(/^\//, "")}.html`;
+  }
   return `${API_BASE}${normalized}`;
 }
 
@@ -30,8 +55,10 @@ function initAppLinks() {
     if (path) el.setAttribute("href", appUrl(path));
   });
 
-  // Ponte: qualquer link estático da Área do Cliente vai para o Next (:3000)
-  document.querySelectorAll('a[href]').forEach((el) => {
+  // Ponte HTML → Next só quando a API local/remota existe
+  if (!API_AVAILABLE) return;
+
+  document.querySelectorAll("a[href]").forEach((el) => {
     const href = el.getAttribute("href") || "";
     if (
       href === "area-cliente.html" ||
@@ -409,6 +436,17 @@ function initFaq() {
 const API_TIMEOUT_MS = 15000;
 
 async function postJson(path, body) {
+  if (!API_AVAILABLE) {
+    return {
+      ok: false,
+      status: 0,
+      data: {
+        message:
+          "Este site está em modo visual (GitHub Pages / Netlify estático). Cadastro, login e SAC precisam do app completo com banco de dados.",
+      },
+    };
+  }
+
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), API_TIMEOUT_MS);
 

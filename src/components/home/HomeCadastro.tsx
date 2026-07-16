@@ -5,7 +5,7 @@ export function HomeCadastro() {
   return (
     <section
       id="cadastro"
-      className="relative section-pad scroll-mt-28 border-t border-dahora-line bg-gradient-to-b from-dahora-mist/40 via-dahora-cream to-dahora-sand/60"
+      className="relative section-pad scroll-mt-28 border-t border-dahora-line bg-white"
       aria-labelledby="home-cadastro-title"
     >
       <FloatAnnounceBanner />

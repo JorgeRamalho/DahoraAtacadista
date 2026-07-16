@@ -2,122 +2,53 @@
 <html lang="pt-BR">
   <head>
     <meta charset="UTF-8" />
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1.0, viewport-fit=cover"
-    />
-    <meta name="theme-color" content="#c2410c" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Área do Cliente · Dahora</title>
     <link rel="icon" href="favicon.svg?v=dh-1" type="image/svg+xml" />
-    <link rel="apple-touch-icon" href="favicon.svg?v=dh-1" />
-    <link rel="stylesheet" href="css/style.css?v=topo-all-1" />
+    <meta http-equiv="refresh" content="0;url=http://127.0.0.1:3000/area-cliente" />
+    <link rel="canonical" href="http://127.0.0.1:3000/area-cliente" />
+    <script>
+      (function () {
+        var base =
+          (window.DAHORA_APP_BASE || window.DAHORA_API_BASE || "http://127.0.0.1:3000").replace(
+            /\/$/,
+            ""
+          );
+        window.location.replace(base + "/area-cliente");
+      })();
+    </script>
+    <style>
+      body {
+        margin: 0;
+        min-height: 100vh;
+        display: grid;
+        place-items: center;
+        font-family: Georgia, "Times New Roman", serif;
+        background: linear-gradient(165deg, #fff8f2 0%, #ffefe3 45%, #f3e6d8 100%);
+        color: #1c1210;
+        text-align: center;
+        padding: 2rem;
+      }
+      a {
+        color: #c2410c;
+        font-weight: 700;
+      }
+      p {
+        font-family: system-ui, sans-serif;
+        max-width: 28rem;
+        line-height: 1.5;
+      }
+    </style>
   </head>
   <body>
-    <div class="layout">
-      <header class="site-header">
-        <div class="container header-inner">
-          <a class="logo" href="index.html" aria-label="Dahora — página inicial">
-            <span class="logo-mark">DH</span>
-            <span class="logo-text">
-              <strong>Dahora</strong>
-              <span>Atacadista</span>
-            </span>
-          </a>
-
-          <nav class="nav-desktop" aria-label="Principal">
-            <a href="index.html#app-download" data-install-app>Baixar app</a>
-            <a href="index.html">Nossa História</a>
-            <a href="index.html#faq">FAQ</a>
-            <a href="dahora-card.html">Dahora Card</a>
-            <a href="dahora-club.html">Dahora Club</a>
-          </nav>
-
-          <div class="header-actions">
-            <a class="btn btn-secondary" href="index.html#cadastro">Cadastrar</a>
-            <a class="btn btn-primary" href="area-cliente.html" aria-current="page">Área do Cliente</a>
-          </div>
-
-          <button
-            class="menu-toggle"
-            type="button"
-            data-menu-toggle
-            aria-expanded="false"
-            aria-controls="menu-mobile"
-            aria-label="Abrir menu"
-          >
-            ☰
-          </button>
-        </div>
-
-        <div class="nav-mobile" id="menu-mobile" data-menu-panel>
-          <div class="container">
-            <a href="index.html#app-download" data-install-app>Baixar app</a>
-            <a href="index.html">Nossa História</a>
-            <a href="index.html#faq">FAQ</a>
-            <a href="dahora-card.html">Dahora Card</a>
-            <a href="dahora-club.html">Dahora Club</a>
-            <div class="mobile-actions">
-              <a class="btn btn-secondary" href="index.html#cadastro">Cadastrar</a>
-              <a class="btn btn-primary" href="area-cliente.html" aria-current="page">Área do Cliente</a>
-            </div>
-          </div>
-        </div>
-      </header>
-
-      <main>
-        <section class="page-hero">
-          <div class="container">
-            <p class="eyebrow">Acesso seguro</p>
-            <h1>Área do Cliente</h1>
-            <p>
-              Entre com o e-mail e a senha do cadastro do Dahora Card.
-            </p>
-          </div>
-        </section>
-
-        <section class="section" style="padding-top:2.5rem">
-          <div class="container" style="max-width:28rem;margin-inline:auto">
-            <form class="surface" data-form="login" novalidate>
-              <div class="field mb-2">
-                <label for="email">E-mail</label>
-                <input id="email" name="email" type="email" required autocomplete="email" />
-              </div>
-              <div class="field mb-2">
-                <label for="senha">Senha</label>
-                <input id="senha" name="senha" type="password" required autocomplete="current-password" />
-              </div>
-              <p class="alert alert-error" data-alert hidden></p>
-              <button class="btn btn-primary btn-block" type="submit">Entrar na Área do Cliente</button>
-              <p class="text-center muted mt-2" style="font-size:0.9rem">
-                Ainda não tem cartão?
-                <a href="index.html#cadastro" style="color:var(--dahora-forest);font-weight:600">Cadastre-se</a>
-              </p>
-            </form>
-
-            <p class="text-center muted mt-3" style="font-size:0.85rem">
-              Versão React da Área do Cliente:
-              <a href="react/index.html" style="color:var(--dahora-forest);font-weight:600">frontend/react</a>
-            </p>
-          </div>
-        </section>
-      </main>
-
-      <footer class="site-footer">
-        <div class="container footer-bottom">
-          <p>© <span data-year></span> Dahora Atacadista</p>
-          <p>
-            <a href="privacidade.html">Privacidade</a> ·
-            <a href="cookies.html">Cookies</a> ·
-            <button type="button" class="linkish" data-cookie-reset>Gerenciar cookies</button>
-          </p>
-        </div>
-      </footer>
-    </div>
-    <script src="js/script.js?v=topo-all-1"></script>
-  
-    <button type="button" class="back-to-top" data-back-to-top aria-label="Voltar ao topo" title="Voltar ao topo">
-      <span class="back-to-top__icon" aria-hidden="true">↑</span>
-      <span class="back-to-top__label">Topo</span>
-    </button>
+    <main>
+      <h1>Área do Cliente</h1>
+      <p>
+        Abrindo a aplicação oficial…
+        <br />
+        Se não redirecionar,
+        <a href="http://127.0.0.1:3000/area-cliente">clique aqui</a>.
+      </p>
+    </main>
   </body>
 </html>

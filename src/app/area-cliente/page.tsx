@@ -8,7 +8,7 @@ import { prisma } from "@/lib/db/prisma";
 export const metadata: Metadata = {
   title: "Área do Cliente",
   description:
-    "Acesse seu Dahora Card digital, pontos, dados cadastrais e histórico de atendimento.",
+    "Dashboard do Dahora Card: cartão digital, pontos, ofertas, perfil e atendimento.",
 };
 
 export const dynamic = "force-dynamic";

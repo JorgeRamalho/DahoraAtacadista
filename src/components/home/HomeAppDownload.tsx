@@ -1,6 +1,3 @@
-"use client";
-
-import { useEffect, useMemo, useState } from "react";
 import { brand } from "@/lib/brand";
 
 const PLAY_STORE_URL =
@@ -49,19 +46,11 @@ function AppStoreBadge() {
 }
 
 export function HomeAppDownload() {
-  const [appUrl, setAppUrl] = useState("https://dahora.com.br");
-
-  useEffect(() => {
-    setAppUrl(`${window.location.origin}/`);
-  }, []);
-
-  const qrSrc = useMemo(() => {
-    const data = encodeURIComponent(appUrl);
-    return `https://api.qrserver.com/v1/create-qr-code/?size=220x220&margin=0&data=${data}`;
-  }, [appUrl]);
+  const qrSrc = `https://api.qrserver.com/v1/create-qr-code/?size=220x220&margin=0&data=${encodeURIComponent(PLAY_STORE_URL)}`;
 
   return (
     <section
+      id="app-download"
       className="section-pad border-b border-dahora-line bg-white"
       aria-labelledby="app-download-title"
     >
@@ -111,11 +100,11 @@ export function HomeAppDownload() {
                 src={qrSrc}
                 width={220}
                 height={220}
-                alt={`QR Code para abrir o app ${brand.name}`}
+                alt={`QR Code para baixar o app ${brand.name} na Google Play`}
                 loading="lazy"
               />
             </div>
-            <figcaption>Aponte a câmera para abrir o app</figcaption>
+            <figcaption>Aponte a câmera para abrir a Google Play</figcaption>
           </figure>
         </div>
       </div>

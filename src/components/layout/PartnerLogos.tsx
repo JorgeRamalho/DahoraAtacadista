@@ -2,14 +2,13 @@
 
 export function IfoodMark({ className = "" }: { className?: string }) {
   return (
-    <span className={`partner-mark partner-mark--ifood ${className}`} title="iFood" aria-label="iFood">
+    <span className={`partner-mark partner-mark--ifood ${className}`}>
       <svg viewBox="0 0 86 28" width="86" height="28" aria-hidden="true">
         <rect width="86" height="28" rx="8" fill="#EA1D2C" />
         <text
-          x="43"
+          x="14"
           y="19"
-          textAnchor="middle"
-          fill="#FFFFFF"
+          fill="#fff"
           fontFamily="Arial Black, Arial, sans-serif"
           fontSize="13"
           fontWeight="900"

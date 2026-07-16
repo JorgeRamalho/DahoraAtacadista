@@ -134,11 +134,16 @@ export function CadastroForm() {
     setErrors({});
     setApiError("");
 
+    const controller = new AbortController();
+    const timer = window.setTimeout(() => controller.abort(), 15000);
+
     try {
       const res = await fetch("/api/cadastro", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
+        credentials: "include",
         body: JSON.stringify(form),
+        signal: controller.signal,
       });
       const data = await res.json();
 
@@ -159,11 +164,15 @@ export function CadastroForm() {
         nome: data.nomeCompleto,
       });
       setForm(initial);
-    } catch {
+    } catch (error) {
+      const timedOut = error instanceof DOMException && error.name === "AbortError";
       setApiError(
-        "Erro de conexão com a API. Confirme se o servidor e o PostgreSQL estão ativos (npm run start:all)."
+        timedOut
+          ? "A API não respondeu a tempo. Confirme se o Next.js e o PostgreSQL estão ativos (npm run start:all)."
+          : "Erro de conexão com a API. Confirme se o servidor e o PostgreSQL estão ativos (npm run start:all)."
       );
     } finally {
+      window.clearTimeout(timer);
       setLoading(false);
     }
   }

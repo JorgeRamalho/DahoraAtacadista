@@ -1,17 +1,17 @@
 const benefits = [
   {
     title: "Pontos em toda compra",
-    text: "Acumule 1 ponto por real gasto no varejo e no atacado — e troque por vantagens reais.",
+    text: "1 ponto por real no varejo e no atacado — troque por vantagens reais.",
     icon: "◈",
   },
   {
     title: "Ofertas exclusivas",
-    text: "Preços de atacado e campanhas só para quem tem Dahora Card ativo.",
+    text: "Preços de atacado e campanhas só para quem tem Dahora Card.",
     icon: "◇",
   },
   {
     title: "Área do Cliente",
-    text: "Saldo, cartão digital, histórico de atendimento e dados cadastrais em um só lugar.",
+    text: "Saldo, cartão digital e histórico de atendimento em um só lugar.",
     icon: "○",
   },
   {
@@ -23,7 +23,7 @@ const benefits = [
 
 export function HomeBenefits() {
   return (
-    <section className="section-pad">
+    <section className="section-pad bg-white" aria-label="Por que Dahora">
       <div className="container-page">
         <div className="max-w-2xl">
           <p className="text-xs font-semibold uppercase tracking-[0.2em] text-dahora-forest">
@@ -32,17 +32,17 @@ export function HomeBenefits() {
           <h2 className="font-display mt-3 text-3xl font-semibold tracking-tight text-dahora-ink md:text-4xl">
             Uma experiência pensada para quem compra com estratégia
           </h2>
-          <p className="mt-4 text-dahora-slate leading-relaxed">
-            Do corredor do supermercado ao volume do atacado: uma identidade clara,
-            navegação guiada e benefícios que aparecem no dia a dia.
+          <p className="mt-4 max-w-xl text-dahora-slate leading-relaxed">
+            Do corredor do supermercado ao volume do atacado: identidade clara,
+            navegação guiada e benefícios no dia a dia.
           </p>
         </div>
 
         <ul className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {benefits.map((item) => (
-            <li key={item.title} className="group">
-              <div className="mb-4 grid h-12 w-12 place-items-center rounded-2xl bg-dahora-mist text-lg text-dahora-forest transition group-hover:scale-105 group-hover:bg-dahora-leaf group-hover:text-white">
-                <span aria-hidden>{item.icon}</span>
+            <li key={item.title} className="home-feature">
+              <div className="home-feature__icon" aria-hidden>
+                {item.icon}
               </div>
               <h3 className="font-display text-xl font-semibold text-dahora-ink">
                 {item.title}

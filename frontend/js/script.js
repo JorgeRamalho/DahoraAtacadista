@@ -4,14 +4,44 @@
  */
 
 function resolveApiBase() {
-  if (typeof window === "undefined") return "http://localhost:3000";
+  if (typeof window === "undefined") return "http://127.0.0.1:3000";
   if (window.DAHORA_API_BASE) return window.DAHORA_API_BASE;
-  // Mesmo host do dispositivo (útil na rede Wi‑Fi: 192.168.x.x)
+  // Já no Next (porta 3000): mesma origem
   if (window.location.port === "3000") return "";
-  return `http://${window.location.hostname}:3000`;
+
+  // Front estático (Live Server etc.): preferir loopback.
+  // Usar o IP da LAN (ex.: 192.168.x.x:3000) no mesmo PC costuma travar
+  // no firewall do Windows; 127.0.0.1 responde normalmente.
+  // Em outro dispositivo na Wi‑Fi, defina window.DAHORA_API_BASE antes do script.
+  return "http://127.0.0.1:3000";
 }
 
 const API_BASE = resolveApiBase();
+
+/** URL absoluta do app Next (mesmo host da API), evita perder sessão com localhost fixo. */
+function appUrl(path) {
+  const normalized = path.startsWith("/") ? path : `/${path}`;
+  return `${API_BASE}${normalized}`;
+}
+
+function initAppLinks() {
+  document.querySelectorAll("[data-app-link]").forEach((el) => {
+    const path = el.getAttribute("data-app-link");
+    if (path) el.setAttribute("href", appUrl(path));
+  });
+
+  // Ponte: qualquer link estático da Área do Cliente vai para o Next (:3000)
+  document.querySelectorAll('a[href]').forEach((el) => {
+    const href = el.getAttribute("href") || "";
+    if (
+      href === "area-cliente.html" ||
+      href.endsWith("/area-cliente.html") ||
+      href === "../area-cliente.html"
+    ) {
+      el.setAttribute("href", appUrl("/area-cliente"));
+    }
+  });
+}
 
 /* ---------- Menu mobile ---------- */
 function initMenu() {
@@ -376,15 +406,37 @@ function initFaq() {
 }
 
 /* ---------- Helpers de formulário / API ---------- */
+const API_TIMEOUT_MS = 15000;
+
 async function postJson(path, body) {
-  const res = await fetch(`${API_BASE}${path}`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    credentials: "include",
-    body: JSON.stringify(body),
-  });
-  const data = await res.json().catch(() => ({}));
-  return { ok: res.ok, status: res.status, data };
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), API_TIMEOUT_MS);
+
+  try {
+    const res = await fetch(`${API_BASE}${path}`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      credentials: "include",
+      body: JSON.stringify(body),
+      signal: controller.signal,
+    });
+    const data = await res.json().catch(() => ({}));
+    return { ok: res.ok, status: res.status, data };
+  } catch (error) {
+    console.error("postJson:", path, error);
+    const timedOut = error?.name === "AbortError";
+    return {
+      ok: false,
+      status: 0,
+      data: {
+        message: timedOut
+          ? "A API não respondeu a tempo. Confirme se o Next.js está rodando na porta 3000 (npm run start:all ou npm run dev:lan) e tente novamente."
+          : "Não foi possível conectar à API. Confirme se o Next.js está ativo (npm run start:all) e tente novamente.",
+      },
+    };
+  } finally {
+    clearTimeout(timer);
+  }
 }
 
 function formToObject(form) {
@@ -458,31 +510,37 @@ function initCadastroForm() {
     e.preventDefault();
     clearFieldErrors(form);
     const btn = form.querySelector("[type='submit']");
+    const label = btn.textContent;
     btn.disabled = true;
     btn.textContent = "Gravando no PostgreSQL…";
 
-    const payload = formToObject(form);
-    const { ok, data } = await postJson("/api/cadastro", payload);
-    btn.disabled = false;
-    btn.textContent = "Concluir cadastro do Dahora Card";
+    try {
+      const payload = formToObject(form);
+      const { ok, data } = await postJson("/api/cadastro", payload);
 
-    if (!ok) {
-      applyFieldErrors(form, data.fieldErrors);
-      showAlert(
-        alert,
-        data.message ||
-          "Não foi possível concluir o cadastro. Confirme se o Next.js e o PostgreSQL estão ativos (npm run start:all)."
-      );
-      return;
-    }
+      if (!ok) {
+        applyFieldErrors(form, data.fieldErrors);
+        showAlert(
+          alert,
+          data.message ||
+            "Não foi possível concluir o cadastro. Confirme se o Next.js e o PostgreSQL estão ativos (npm run start:all)."
+        );
+        return;
+      }
 
-    form.hidden = true;
-    if (alert) alert.hidden = true;
-    if (success) {
-      success.hidden = false;
-      success.querySelector("[data-card-number]").textContent = data.numeroCartao;
-      success.querySelector("[data-client-name]").textContent =
-        (data.nomeCompleto || "").split(" ")[0] || "cliente";
+      form.hidden = true;
+      if (alert) alert.hidden = true;
+      if (success) {
+        success.hidden = false;
+        success.querySelector("[data-card-number]").textContent = data.numeroCartao;
+        success.querySelector("[data-client-name]").textContent =
+          (data.nomeCompleto || "").split(" ")[0] || "cliente";
+        const cta = success.querySelector("[data-app-link]");
+        if (cta) cta.setAttribute("href", appUrl("/area-cliente"));
+      }
+    } finally {
+      btn.disabled = false;
+      btn.textContent = label || "Concluir cadastro do Dahora Card";
     }
   });
 }
@@ -540,14 +598,21 @@ function initLoginForm() {
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
     const btn = form.querySelector("[type='submit']");
+    const label = btn.textContent;
     btn.disabled = true;
-    const { ok, data } = await postJson("/api/auth/login", formToObject(form));
-    btn.disabled = false;
-    if (!ok) {
-      showAlert(alert, data.message || "Falha no login.");
-      return;
+    btn.textContent = "Entrando…";
+
+    try {
+      const { ok, data } = await postJson("/api/auth/login", formToObject(form));
+      if (!ok) {
+        showAlert(alert, data.message || "Falha no login.");
+        return;
+      }
+      window.location.href = appUrl("/area-cliente");
+    } finally {
+      btn.disabled = false;
+      btn.textContent = label || "Entrar";
     }
-    window.location.href = "http://localhost:3000/area-cliente";
   });
 }
 
@@ -639,12 +704,16 @@ function initCarousel() {
 function initAppQr() {
   const img = document.querySelector("[data-app-qr]");
   if (!img) return;
-  const target = `${window.location.origin}${window.location.pathname.replace(/[^/]*$/, "")}`;
-  const url = target.endsWith("/") ? target : `${target}/`;
+  const playStoreUrl =
+    window.DAHORA_PLAY_STORE_URL ||
+    "https://play.google.com/store/apps/details?id=br.com.dahora.app";
   img.setAttribute(
     "src",
-    `https://api.qrserver.com/v1/create-qr-code/?size=220x220&margin=0&data=${encodeURIComponent(url)}`
+    `https://api.qrserver.com/v1/create-qr-code/?size=220x220&margin=0&data=${encodeURIComponent(playStoreUrl)}`
   );
+  img.setAttribute("alt", "QR Code para baixar o app Dahora na Google Play");
+  const caption = img.closest("figure")?.querySelector("figcaption");
+  if (caption) caption.textContent = "Aponte a câmera para abrir a Google Play";
 }
 
 /* ---------- WhatsApp SAC (flutuante + header) ---------- */
@@ -820,7 +889,7 @@ function initAppShell() {
           <span class="app-bottom-nav__icon" aria-hidden="true">☎</span>
           <span>SAC</span>
         </button>
-        <a class="app-bottom-nav__item" href="area-cliente.html" data-nav="cliente">
+        <a class="app-bottom-nav__item" href="${appUrl("/area-cliente")}" data-nav="cliente">
           <span class="app-bottom-nav__icon" aria-hidden="true">◎</span>
           <span>Conta</span>
         </a>
@@ -993,6 +1062,7 @@ function initCookieConsent() {
 
 document.addEventListener("DOMContentLoaded", () => {
   initAppShell();
+  initAppLinks();
   initMenu();
   initYear();
   initStatusBar();

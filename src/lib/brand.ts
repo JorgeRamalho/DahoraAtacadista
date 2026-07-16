@@ -9,11 +9,11 @@ export const brand = {
   hours: "Atendimento 24 horas · todos os dias",
 } as const;
 
+/** Navegação alinhada ao frontend/index.html */
 export const navLinks = [
-  { href: "/", label: "Início" },
+  { href: "/#app-download", label: "Baixar app" },
+  { href: "/", label: "Nossa História" },
+  { href: "/#faq", label: "FAQ" },
   { href: "/dahora-card", label: "Dahora Card" },
-  { href: "/faq", label: "FAQ" },
-  { href: "/tire-sua-duvida", label: "Tire sua dúvida" },
-  { href: "/sac", label: "SAC 24h" },
-  { href: "/area-cliente", label: "Área do Cliente" },
+  { href: "/dahora-club", label: "Dahora Club" },
 ] as const;

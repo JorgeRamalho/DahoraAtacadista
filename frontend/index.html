@@ -207,14 +207,14 @@
                 <div class="app-download__qr-frame">
                   <img
                     data-app-qr
-                    src="https://api.qrserver.com/v1/create-qr-code/?size=220x220&amp;margin=0&amp;data=https%3A%2F%2Flocalhost%3A3000%2F"
+                    src="https://api.qrserver.com/v1/create-qr-code/?size=220x220&amp;margin=0&amp;data=https%3A%2F%2Fplay.google.com%2Fstore%2Fapps%2Fdetails%3Fid%3Dbr.com.dahora.app"
                     width="220"
                     height="220"
-                    alt="QR Code para abrir o app Dahora"
+                    alt="QR Code para baixar o app Dahora na Google Play"
                     loading="lazy"
                   />
                 </div>
-                <figcaption>Aponte a câmera para abrir o app</figcaption>
+                <figcaption>Aponte a câmera para abrir a Google Play</figcaption>
               </figure>
             </div>
           </div>
@@ -374,7 +374,7 @@
               <h2>Cadastro concluído, <span data-client-name></span>!</h2>
               <p class="muted mt-2">Dados gravados no PostgreSQL. Número do cartão:</p>
               <p class="mt-2" style="font-family: ui-monospace, monospace; font-size: 1.25rem; font-weight: 700; color: var(--dahora-forest)" data-card-number></p>
-              <a class="btn btn-primary mt-3" href="http://localhost:3000/area-cliente">Ir para Área do Cliente</a>
+              <a class="btn btn-primary mt-3" data-app-link="/area-cliente" href="/area-cliente">Ir para Área do Cliente</a>
             </div>
 
             <form class="surface" data-form="cadastro" novalidate>

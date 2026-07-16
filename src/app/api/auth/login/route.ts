@@ -3,6 +3,11 @@ import bcrypt from "bcryptjs";
 import { prisma } from "@/lib/db/prisma";
 import { loginSchema } from "@/lib/validations/schemas";
 import { setSession } from "@/lib/auth/session";
+import { optionsCors, withCors } from "@/lib/api/cors";
+
+export async function OPTIONS(request: Request) {
+  return optionsCors(request);
+}
 
 export async function POST(request: Request) {
   try {
@@ -10,9 +15,12 @@ export async function POST(request: Request) {
     const parsed = loginSchema.safeParse(body);
 
     if (!parsed.success) {
-      return NextResponse.json(
-        { message: "Informe e-mail e senha válidos." },
-        { status: 400 }
+      return withCors(
+        request,
+        NextResponse.json(
+          { message: "Informe e-mail e senha válidos." },
+          { status: 400 }
+        )
       );
     }
 
@@ -21,25 +29,37 @@ export async function POST(request: Request) {
     });
 
     if (!cliente) {
-      return NextResponse.json(
-        { message: "E-mail ou senha incorretos." },
-        { status: 401 }
+      return withCors(
+        request,
+        NextResponse.json(
+          { message: "E-mail ou senha incorretos." },
+          { status: 401 }
+        )
       );
     }
 
     const ok = await bcrypt.compare(parsed.data.senha, cliente.senhaHash);
     if (!ok) {
-      return NextResponse.json(
-        { message: "E-mail ou senha incorretos." },
-        { status: 401 }
+      return withCors(
+        request,
+        NextResponse.json(
+          { message: "E-mail ou senha incorretos." },
+          { status: 401 }
+        )
       );
     }
 
     await setSession(cliente.id);
 
-    return NextResponse.json({ message: "Login realizado." });
+    return withCors(
+      request,
+      NextResponse.json({ message: "Login realizado." })
+    );
   } catch (error) {
     console.error("login:", error);
-    return NextResponse.json({ message: "Erro interno." }, { status: 500 });
+    return withCors(
+      request,
+      NextResponse.json({ message: "Erro interno." }, { status: 500 })
+    );
   }
 }

@@ -77,7 +77,7 @@ export function HomeCarousel() {
         touchStartX.current = null;
       }}
     >
-      <div className="relative h-[42vw] min-h-[220px] max-h-[420px] w-full">
+      <div className="relative h-[var(--carousel-height)] w-full">
         {slides.map((slide, i) => (
           <figure
             key={slide.src}

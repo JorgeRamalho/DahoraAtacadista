@@ -15,11 +15,16 @@ export function LoginForm() {
     setLoading(true);
     setError("");
 
+    const controller = new AbortController();
+    const timer = window.setTimeout(() => controller.abort(), 15000);
+
     try {
       const res = await fetch("/api/auth/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
+        credentials: "include",
         body: JSON.stringify({ email, senha }),
+        signal: controller.signal,
       });
       const data = await res.json();
       if (!res.ok) {
@@ -28,9 +33,15 @@ export function LoginForm() {
       }
       router.push("/area-cliente");
       router.refresh();
-    } catch {
-      setError("Erro de conexão. Tente novamente.");
+    } catch (error) {
+      const timedOut = error instanceof DOMException && error.name === "AbortError";
+      setError(
+        timedOut
+          ? "A API não respondeu a tempo. Confirme se o servidor está ativo."
+          : "Erro de conexão. Tente novamente."
+      );
     } finally {
+      window.clearTimeout(timer);
       setLoading(false);
     }
   }

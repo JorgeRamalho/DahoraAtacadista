@@ -26,11 +26,11 @@ export function Header() {
         </nav>
 
         <div className="hidden items-center gap-2 xl:flex">
-          <Link href="/area-cliente" className="btn-secondary !px-4 !py-2.5 text-sm">
-            Entrar
+          <Link href="/#cadastro" className="btn-secondary !px-4 !py-2.5 text-sm">
+            Cadastrar
           </Link>
-          <Link href="/#cadastro" className="btn-primary !px-4 !py-2.5 text-sm">
-            Pedir cartão
+          <Link href="/area-cliente" className="btn-primary !px-4 !py-2.5 text-sm">
+            Área do Cliente
           </Link>
         </div>
 
@@ -70,11 +70,11 @@ export function Header() {
               </Link>
             ))}
             <div className="mt-3 flex flex-col gap-2">
-              <Link href="/area-cliente" className="btn-secondary w-full" onClick={() => setOpen(false)}>
-                Entrar
+              <Link href="/#cadastro" className="btn-secondary w-full" onClick={() => setOpen(false)}>
+                Cadastrar
               </Link>
-              <Link href="/#cadastro" className="btn-primary w-full" onClick={() => setOpen(false)}>
-                Pedir cartão
+              <Link href="/area-cliente" className="btn-primary w-full" onClick={() => setOpen(false)}>
+                Área do Cliente
               </Link>
             </div>
           </nav>

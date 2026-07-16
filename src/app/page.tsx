@@ -7,6 +7,14 @@ import { HomeJourney } from "@/components/home/HomeJourney";
 import { HomeHero } from "@/components/home/HomeHero";
 import { HomeFaq } from "@/components/home/HomeFaq";
 import { HomeCadastro } from "@/components/home/HomeCadastro";
+import { brand } from "@/lib/brand";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: {
+    absolute: `${brand.fullName} — ${brand.slogan}`,
+  },
+};
 
 export default function HomePage() {
   return (

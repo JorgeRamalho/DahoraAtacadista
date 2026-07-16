@@ -1,22 +1,30 @@
 {
+  "id": "/?app=dahora-atacadista",
   "name": "Dahora Atacadista",
-  "short_name": "Dahora",
+  "short_name": "Dahora Atacadista",
   "description": "Preço de verdade. Compra com inteligência. Rede de supermercados e atacado.",
-  "start_url": "/",
+  "start_url": "/?app=dahora-atacadista",
   "scope": "/",
   "display": "standalone",
+  "display_override": ["standalone", "minimal-ui", "browser"],
+  "launch_handler": {
+    "client_mode": ["navigate-existing", "auto"]
+  },
   "orientation": "portrait-primary",
   "background_color": "#fff8f2",
   "theme_color": "#c2410c",
   "lang": "pt-BR",
-  "categories": ["shopping", "business"],
-  "icons": [
+  "dir": "ltr",
+  "categories": ["shopping", "business", "food"],
+  "prefer_related_applications": false,
+  "related_applications": [
     {
-      "src": "/logo/dahora-mark.svg",
-      "sizes": "any",
-      "type": "image/svg+xml",
-      "purpose": "any"
-    },
+      "platform": "webapp",
+      "url": "/manifest-dahora-atacadista.webmanifest",
+      "id": "/?app=dahora-atacadista"
+    }
+  ],
+  "icons": [
     {
       "src": "/icons/icon-192.png",
       "sizes": "192x192",
@@ -27,7 +35,13 @@
       "src": "/icons/icon-512.png",
       "sizes": "512x512",
       "type": "image/png",
-      "purpose": "any maskable"
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/icon-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
     }
   ]
 }

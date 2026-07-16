@@ -85,7 +85,9 @@ npm run dev:lan
 
 `npm run db:up` usa **Docker** se estiver disponível; senão usa o **PostgreSQL do Windows** (porta 5432). Alternativa sem serviço: `npm run db:embed` (porta 5433).
 
-Abra [http://localhost:3000](http://localhost:3000) · health: [/api/health](http://localhost:3000/api/health) (deve retornar `"database":"up"`).
+Abra [http://localhost:3010](http://localhost:3010) · health: [/api/health](http://localhost:3010/api/health) (deve retornar `"database":"up"`).
+
+> **PWA:** o Dahora usa a porta **3010** de propósito — Carona fica na **3000** e Trampolim na **3020**, para o Chrome não misturar os apps. Se «Abrir na app» abrir outro projeto, limpe em [/limpar-pwa](http://localhost:3010/limpar-pwa) e em `chrome://apps`.
 
 **Docker Desktop:** WSL + Virtual Machine Platform já foram habilitados. **Reinicie o Windows uma vez**, abra o Docker Desktop e rode `npm run after:reboot`. Enquanto isso, o app já funciona com PostgreSQL do Windows (`npm run start:all`).
 

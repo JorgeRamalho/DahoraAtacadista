@@ -1,6 +1,8 @@
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { AppStatusBar } from "@/components/layout/AppStatusBar";
+import { AppBottomNav } from "@/components/pwa/AppBottomNav";
+import { InstallHintBar } from "@/components/pwa/InstallHintBar";
 
 export function SiteShell({ children }: { children: React.ReactNode }) {
   return (
@@ -11,14 +13,16 @@ export function SiteShell({ children }: { children: React.ReactNode }) {
       >
         Ir para o conteúdo
       </a>
-      <div className="sticky top-0 z-50">
+      <div className="site-header sticky top-0 z-50">
         <Header />
         <AppStatusBar />
+        <InstallHintBar />
       </div>
       <main id="conteudo" className="flex-1">
         {children}
       </main>
       <Footer />
+      <AppBottomNav />
     </div>
   );
 }

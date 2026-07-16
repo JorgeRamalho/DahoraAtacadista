@@ -3,7 +3,14 @@
 import Link from "next/link";
 import { useState } from "react";
 import { Logo } from "@/components/brand/Logo";
+import { OpenInAppTrigger } from "@/components/pwa/OpenInAppTrigger";
 import { navLinks } from "@/lib/brand";
+
+/** Menu do header: Nossa História primeiro; app fica no botão OpenInApp. */
+const mainNavLinks = [
+  ...navLinks.filter((link) => link.href === "/"),
+  ...navLinks.filter((link) => link.href !== "/" && link.href !== "/#app-download"),
+];
 
 export function Header() {
   const [open, setOpen] = useState(false);
@@ -14,7 +21,7 @@ export function Header() {
         <Logo />
 
         <nav className="hidden items-center gap-0.5 xl:flex" aria-label="Principal">
-          {navLinks.map((link) => (
+          {mainNavLinks.map((link) => (
             <Link
               key={link.href}
               href={link.href}
@@ -26,6 +33,7 @@ export function Header() {
         </nav>
 
         <div className="hidden items-center gap-2 xl:flex">
+          <OpenInAppTrigger size="compact" />
           <Link href="/#cadastro" className="btn-secondary !px-4 !py-2.5 text-sm">
             Cadastrar
           </Link>
@@ -59,7 +67,7 @@ export function Header() {
           className="max-h-[70vh] overflow-y-auto border-t border-dahora-line bg-white xl:hidden"
         >
           <nav className="container-page flex flex-col gap-1 py-4" aria-label="Mobile">
-            {navLinks.map((link) => (
+            {mainNavLinks.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
@@ -69,6 +77,9 @@ export function Header() {
                 {link.label}
               </Link>
             ))}
+            <div className="mt-2 px-3 pb-1">
+              <OpenInAppTrigger size="default" className="w-full justify-center" />
+            </div>
             <div className="mt-3 flex flex-col gap-2">
               <Link href="/#cadastro" className="btn-secondary w-full" onClick={() => setOpen(false)}>
                 Cadastrar

@@ -10,18 +10,18 @@ function isLoopbackHost() {
 
 /**
  * null  → hospedagem estática (GitHub Pages / Netlify) sem API Next
- * ""    → mesma origem (Next na porta 3000)
+ * ""    → mesma origem (Next na porta 3010)
  * url   → Next em outro host (local ou DAHORA_API_BASE)
  */
 function resolveApiBase() {
-  if (typeof window === "undefined") return "http://127.0.0.1:3000";
+  if (typeof window === "undefined") return "http://127.0.0.1:3010";
   if (window.DAHORA_API_BASE) return window.DAHORA_API_BASE;
-  // Já no Next (porta 3000): mesma origem
-  if (window.location.port === "3000") return "";
+  // Já no Next (porta 3010): mesma origem
+  if (window.location.port === "3010") return "";
 
   // Front estático local (Live Server etc.): API no loopback.
   // Em outro dispositivo na Wi‑Fi, defina window.DAHORA_API_BASE antes do script.
-  if (isLoopbackHost()) return "http://127.0.0.1:3000";
+  if (isLoopbackHost()) return "http://127.0.0.1:3010";
 
   // github.io, Netlify, etc.: só o HTML — sem backend nesta origem
   return null;
@@ -468,7 +468,7 @@ async function postJson(path, body) {
       status: 0,
       data: {
         message: timedOut
-          ? "A API não respondeu a tempo. Confirme se o Next.js está rodando na porta 3000 (npm run start:all ou npm run dev:lan) e tente novamente."
+          ? "A API não respondeu a tempo. Confirme se o Next.js está rodando na porta 3010 (npm run start:all ou npm run dev:lan) e tente novamente."
           : "Não foi possível conectar à API. Confirme se o Next.js está ativo (npm run start:all) e tente novamente.",
       },
     };
@@ -1098,7 +1098,52 @@ function initCookieConsent() {
   });
 }
 
+/** Registra o SW exclusivo do Dahora e remove workers de outros apps no origin. */
+async function initDahoraPwa() {
+  if (!("serviceWorker" in navigator)) return;
+
+  const DAHORA_SW = "sw-dahora-atacadista.js";
+
+  try {
+    const regs = await navigator.serviceWorker.getRegistrations();
+    await Promise.all(
+      regs.map(async (reg) => {
+        const script =
+          reg.active?.scriptURL ||
+          reg.waiting?.scriptURL ||
+          reg.installing?.scriptURL ||
+          "";
+        const isDahora = script.includes("sw-dahora-atacadista.js");
+        if (!isDahora) {
+          await reg.unregister();
+          console.info("[Dahora PWA] SW removido:", script || reg.scope);
+        }
+      })
+    );
+
+    if ("caches" in window) {
+      const keys = await caches.keys();
+      await Promise.all(
+        keys
+          .filter((key) => !key.startsWith("dahora-frontend-static-"))
+          .map((key) => caches.delete(key))
+      );
+    }
+
+    const reg = await navigator.serviceWorker.register(DAHORA_SW, {
+      scope: "./",
+      updateViaCache: "none",
+    });
+    if (reg.waiting) reg.waiting.postMessage({ type: "SKIP_WAITING" });
+  } catch (error) {
+    console.warn("[Dahora PWA] Falha ao registrar SW:", error);
+  }
+
+  document.title = "Dahora Atacadista — Preço de verdade. Compra com inteligência.";
+}
+
 document.addEventListener("DOMContentLoaded", () => {
+  void initDahoraPwa();
   initAppShell();
   initAppLinks();
   initMenu();

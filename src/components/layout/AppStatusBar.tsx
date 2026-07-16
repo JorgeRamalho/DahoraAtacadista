@@ -1,16 +1,19 @@
+"use client";
+
 import {
   IfoodMark,
   NineNineFoodMark,
   UberEatsMark,
 } from "@/components/layout/PartnerLogos";
+import { OpenInAppTrigger } from "@/components/pwa/OpenInAppTrigger";
 
-/** Barra superior alinhada ao frontend (só parceiros de delivery). */
+/** Barra superior com parceiros de delivery e botão do Dahora Atacadista. */
 export function AppStatusBar() {
   return (
     <div
       className="app-status-bar"
       role="region"
-      aria-label="Parceiros de delivery"
+      aria-label="Barra do aplicativo"
     >
       <div className="container-page app-status-bar__inner">
         <div
@@ -52,6 +55,11 @@ export function AppStatusBar() {
             <UberEatsMark />
           </a>
         </div>
+
+        <OpenInAppTrigger
+          size="compact"
+          className="app-status-bar__open-app xl:hidden"
+        />
       </div>
     </div>
   );

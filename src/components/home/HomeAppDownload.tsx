@@ -1,4 +1,5 @@
 import { brand } from "@/lib/brand";
+import { PwaInstallButton } from "@/components/pwa/PwaInstallButton";
 
 const PLAY_STORE_URL =
   process.env.NEXT_PUBLIC_PLAY_STORE_URL ||
@@ -58,18 +59,31 @@ export function HomeAppDownload() {
         <div className="app-download">
           <div className="app-download__copy">
             <p className="text-xs font-semibold uppercase tracking-[0.2em] text-dahora-forest">
-              App Dahora
+              {brand.appName}
             </p>
             <h2
               id="app-download-title"
               className="font-display mt-3 text-3xl font-semibold tracking-tight text-dahora-ink md:text-4xl"
             >
-              Baixe o app e leve a {brand.name} no bolso
+              Baixe o {brand.appName} no bolso
             </h2>
             <p className="mt-3 text-dahora-slate leading-relaxed">
               Escaneie o QR Code com a câmera do celular ou baixe direto na
               Google Play e na App Store. Ofertas, Dahora Card e SAC 24h na palma da mão.
             </p>
+
+            <div className="app-download__pwa mt-5 rounded-2xl border border-dahora-line bg-dahora-mist/60 p-5">
+              <p className="text-xs font-semibold uppercase tracking-[0.16em] text-dahora-forest">
+                App web · {brand.appName}
+              </p>
+              <p className="mt-2 text-sm text-dahora-slate">
+                Instale o {brand.appName} como aplicativo no Chrome, Edge ou Safari —
+                aparece com o nome e ícone da rede na tela inicial.
+              </p>
+              <div className="mt-4">
+                <PwaInstallButton size="large" />
+              </div>
+            </div>
 
             <div className="app-download__stores">
               <a

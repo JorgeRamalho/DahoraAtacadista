@@ -10,7 +10,7 @@ Stack unificada em **Next.js 15 (App Router)**:
 | APIs | Route Handlers em `src/app/api/*` |
 | DB | **PostgreSQL** via Prisma |
 | Auth | Cookie `httpOnly` + `SESSION_SECRET` |
-| PWA | `manifest.webmanifest` + `sw.js` (produção) |
+| PWA | `manifest-dahora-atacadista.webmanifest` + `sw-dahora-atacadista.js` (porta 3010) |
 
 ## Banco PostgreSQL
 
@@ -21,7 +21,7 @@ Credenciais locais: usuário/senha `dahora` / `dahora_dev`, DB `dahora`.
 ```bash
 npm run db:up      # Docker (se pronto) ou PostgreSQL Windows (porta 5432)
 npm run db:ready   # migrations + seed
-npm run dev:lan    # app em http://localhost:3000 e na rede
+npm run dev:lan    # app em http://localhost:3010 e na rede (isolado do Carona :3000)
 ```
 
 Atalho: `npm run start:all` (banco + migrate + Next.js LAN).
@@ -58,8 +58,9 @@ npm run db:setup
 
 ## PWA
 
-- Manifest: `/manifest.webmanifest`
-- Service Worker: `/sw.js` (registrado só em produção)
+- Manifest: `/manifest-dahora-atacadista.webmanifest`
+- Service Worker: `/sw-dahora-atacadista.js` (registrado só em produção)
+- Porta local: `3010` (evita colisão com Carona/Trampolim no Chrome)
 - Ícones: `/icons/icon-192.png`, `/icons/icon-512.png`
 
 ## Roadmap sugerido

@@ -1,6 +1,7 @@
 export const brand = {
   name: "Dahora",
   fullName: "Dahora Atacadista",
+  appName: "Dahora Atacadista",
   cardName: "Dahora Card",
   slogan: "Preço de verdade. Compra com inteligência.",
   tagline: "A rede que une supermercado e atacado em uma só experiência.",
@@ -11,8 +12,8 @@ export const brand = {
 
 /** Navegação alinhada ao frontend/index.html */
 export const navLinks = [
-  { href: "/#app-download", label: "Baixar app" },
   { href: "/", label: "Nossa História" },
+  { href: "/#app-download", label: "Dahora Atacadista" },
   { href: "/#faq", label: "FAQ" },
   { href: "/dahora-card", label: "Dahora Card" },
   { href: "/dahora-club", label: "Dahora Club" },

@@ -10,16 +10,36 @@
     <meta name="mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="default" />
-    <meta name="apple-mobile-web-app-title" content="Dahora" />
+    <meta name="application-name" content="Dahora Atacadista" />
+    <meta name="apple-mobile-web-app-title" content="Dahora Atacadista" />
     <link rel="manifest" href="manifest.webmanifest" />
     <meta
       name="description"
       content="Dahora Atacadista — Preço de verdade. Compra com inteligência. Rede de supermercados e atacado."
     />
-    <title>Dahora — Preço de verdade. Compra com inteligência.</title>
-    <link rel="icon" href="favicon.svg?v=dh-1" type="image/svg+xml" />
-    <link rel="apple-touch-icon" href="favicon.svg?v=dh-1" />
+    <title>Dahora Atacadista — Preço de verdade. Compra com inteligência.</title>
+    <link rel="icon" href="favicon.svg?v=dh-4" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
     <link rel="stylesheet" href="css/style.css?v=topo-all-1" />
+    <script>
+      /* Porta 5500 misturada no Chrome com outros PWAs → servidor exclusivo 5510 */
+      (function () {
+        var host = location.hostname;
+        var port = location.port;
+        if ((host === "127.0.0.1" || host === "localhost") && port === "5500") {
+          var path = location.pathname.replace(/^\/frontend/, "") || "/index.html";
+          var target =
+            "http://127.0.0.1:5510" +
+            path +
+            location.search +
+            location.hash;
+          if (target.indexOf("app=dahora-atacadista") < 0) {
+            target += (target.indexOf("?") >= 0 ? "&" : "?") + "app=dahora-atacadista";
+          }
+          location.replace(target);
+        }
+      })();
+    </script>
   </head>
   <body>
     <div class="layout">
@@ -616,6 +636,6 @@
       <span class="back-to-top__label">Topo</span>
     </button>
 
-    <script src="js/script.js?v=topo-all-1"></script>
+    <script src="js/script.js?v=pwa-5510-1"></script>
   </body>
 </html>

@@ -1,64 +1,24 @@
-/* Dahora PWA — service worker */
-const CACHE = "dahora-static-v1";
-const PRECACHE = [
-  "/",
-  "/manifest.webmanifest",
-  "/logo/dahora-mark.svg",
-  "/icons/icon-192.png",
-  "/icons/icon-512.png",
-];
-
+/**
+ * Stub legado — Carona/Trampolim também usavam /sw.js no localhost:3000.
+ * Este arquivo só se desregistra e limpa caches estranhos; o SW real do Dahora é
+ * /sw-dahora-atacadista.js na porta 3010.
+ */
 self.addEventListener("install", (event) => {
-  event.waitUntil(
-    caches.open(CACHE).then((cache) => cache.addAll(PRECACHE)).then(() => self.skipWaiting())
-  );
+  event.waitUntil(self.skipWaiting());
 });
 
 self.addEventListener("activate", (event) => {
   event.waitUntil(
-    caches.keys().then((keys) =>
-      Promise.all(keys.filter((key) => key !== CACHE).map((key) => caches.delete(key)))
-    ).then(() => self.clients.claim())
-  );
-});
-
-self.addEventListener("fetch", (event) => {
-  const { request } = event;
-  if (request.method !== "GET") return;
-
-  const url = new URL(request.url);
-  if (url.origin !== self.location.origin) return;
-
-  // APIs e auth: sempre rede
-  if (url.pathname.startsWith("/api/")) return;
-
-  // Navegação: network-first com fallback do cache
-  if (request.mode === "navigate") {
-    event.respondWith(
-      fetch(request)
-        .then((response) => {
-          const copy = response.clone();
-          caches.open(CACHE).then((cache) => cache.put(request, copy));
-          return response;
-        })
-        .catch(() => caches.match(request).then((hit) => hit || caches.match("/")))
-    );
-    return;
-  }
-
-  // Estáticos: stale-while-revalidate
-  event.respondWith(
-    caches.match(request).then((cached) => {
-      const fetching = fetch(request)
-        .then((response) => {
-          if (response.ok) {
-            const copy = response.clone();
-            caches.open(CACHE).then((cache) => cache.put(request, copy));
-          }
-          return response;
-        })
-        .catch(() => cached);
-      return cached || fetching;
-    })
+    (async () => {
+      const keys = await caches.keys();
+      await Promise.all(
+        keys
+          .filter((key) => /carona|trampolim|eletrolar/i.test(key) || key.startsWith("dahora-static-"))
+          .map((key) => caches.delete(key))
+      );
+      const regs = await self.registration.unregister();
+      await self.clients.claim();
+      return regs;
+    })()
   );
 });

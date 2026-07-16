@@ -16,7 +16,7 @@ function isDevNetworkOrigin(origin: string): boolean {
 }
 
 export function corsHeaders(origin: string | null): HeadersInit {
-  const allow = origin && isDevNetworkOrigin(origin) ? origin : "http://localhost:3000";
+  const allow = origin && isDevNetworkOrigin(origin) ? origin : "http://localhost:3010";
 
   return {
     "Access-Control-Allow-Origin": allow,

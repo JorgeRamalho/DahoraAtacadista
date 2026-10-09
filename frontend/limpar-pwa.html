@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="application-name" content="Dahora Atacadista" />
+    <title>Limpar PWA · Dahora Atacadista</title>
+    <link rel="manifest" href="manifest.webmanifest" />
+    <style>
+      body {
+        font-family: system-ui, sans-serif;
+        max-width: 40rem;
+        margin: 2rem auto;
+        padding: 0 1rem;
+        color: #1c1210;
+        background: #fff8f2;
+      }
+      button {
+        border: 0;
+        border-radius: 999px;
+        padding: 0.85rem 1.4rem;
+        font-weight: 700;
+        color: #fff;
+        background: #c2410c;
+        cursor: pointer;
+      }
+      pre {
+        background: #fff;
+        border: 1px solid #e7d5c8;
+        border-radius: 12px;
+        padding: 1rem;
+        white-space: pre-wrap;
+        font-size: 0.85rem;
+      }
+      a { color: #c2410c; font-weight: 600; }
+    </style>
+  </head>
+  <body>
+    <h1>Limpar confusão Trampolim → Dahora</h1>
+    <p>
+      Este origin (<code>127.0.0.1:5500</code>) já foi usado pelo Trampolim. Clique abaixo
+      para apagar service workers e caches. Depois remova apps antigos em
+      <a href="chrome://apps" target="_blank" rel="noopener">chrome://apps</a>
+      e volte para
+      <a href="index.html">index.html</a>.
+    </p>
+    <button type="button" id="btn">Limpar agora</button>
+    <pre id="log">Aguardando…</pre>
+    <script>
+      const log = document.getElementById("log");
+      const lines = [];
+      const push = (t) => {
+        lines.push(t);
+        log.textContent = lines.join("\n");
+      };
+
+      document.getElementById("btn").onclick = async () => {
+        lines.length = 0;
+        document.title = "Dahora Atacadista — limpeza";
+
+        if ("serviceWorker" in navigator) {
+          const regs = await navigator.serviceWorker.getRegistrations();
+          for (const reg of regs) {
+            const url =
+              reg.active?.scriptURL ||
+              reg.waiting?.scriptURL ||
+              reg.installing?.scriptURL ||
+              reg.scope;
+            await reg.unregister();
+            push("SW removido: " + url);
+          }
+          if (!regs.length) push("Nenhum SW.");
+        }
+
+        if ("caches" in window) {
+          const keys = await caches.keys();
+          for (const key of keys) {
+            await caches.delete(key);
+            push("Cache removido: " + key);
+          }
+          if (!keys.length) push("Nenhum cache.");
+        }
+
+        localStorage.clear();
+        sessionStorage.clear();
+        push("localStorage/sessionStorage limpos.");
+        push("");
+        push("Agora:");
+        push("1) Abra chrome://apps");
+        push("2) Remova Trampolim (e Carona, se houver)");
+        push("3) Abra index.html e instale Dahora Atacadista");
+      };
+    </script>
+  </body>
+</html>

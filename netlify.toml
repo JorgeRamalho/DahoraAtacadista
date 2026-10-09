@@ -1,0 +1,9 @@
+# Site estático = pasta frontend/ (evita o Netlify tentar buildar o Next.js da raiz).
+# Formulários/API precisam do app Next + banco (Vercel + Neon) — não deste deploy.
+
+[build]
+  command = "echo Static frontend"
+  publish = "frontend"
+
+[build.environment]
+  NETLIFY_NEXT_PLUGIN_SKIP = "true"

@@ -1,0 +1,622 @@
+﻿<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+    />
+    <meta name="theme-color" content="#c2410c" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="application-name" content="Dahora Atacadista" />
+    <meta name="apple-mobile-web-app-title" content="Dahora Atacadista" />
+    <link rel="manifest" href="manifest.webmanifest" />
+    <meta
+      name="description"
+      content="Dahora Atacadista — Preço de verdade. Compra com inteligência. Rede de supermercados e atacado."
+    />
+    <title>Dahora Atacadista — Preço de verdade. Compra com inteligência.</title>
+    <link rel="icon" href="favicon.svg?v=dh-4" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
+    <link rel="stylesheet" href="css/style.css?v=topo-all-1" />
+  </head>
+  <body>
+    <div class="layout">
+      <a class="skip-link" href="#conteudo">Ir para o conteúdo</a>
+
+      <header class="site-header">
+        <div class="container header-inner">
+          <a class="logo" href="index.html" aria-label="Dahora — página inicial">
+            <span class="logo-mark">DH</span>
+            <span class="logo-text">
+              <strong>Dahora</strong>
+              <span>Atacadista</span>
+            </span>
+          </a>
+
+          <nav class="nav-desktop" aria-label="Principal">
+            <a href="#app-download" data-install-app>Baixar app</a>
+            <a href="index.html" aria-current="page">Nossa História</a>
+            <a href="#faq">FAQ</a>
+            <a href="dahora-card.html">Dahora Card</a>
+            <a href="dahora-club.html">Dahora Club</a>
+          </nav>
+
+          <div class="header-actions">
+            <a class="btn btn-secondary" href="#cadastro">Cadastrar</a>
+            <a class="btn btn-primary" href="area-cliente.html">Área do Cliente</a>
+          </div>
+
+          <button
+            class="menu-toggle"
+            type="button"
+            data-menu-toggle
+            aria-expanded="false"
+            aria-controls="menu-mobile"
+            aria-label="Abrir menu"
+          >
+            ☰
+          </button>
+        </div>
+
+        <div class="nav-mobile" id="menu-mobile" data-menu-panel>
+          <div class="container">
+            <a href="#app-download" data-install-app>Baixar app</a>
+            <a href="index.html" aria-current="page">Nossa História</a>
+            <a href="#faq">FAQ</a>
+            <a href="dahora-card.html">Dahora Card</a>
+            <a href="dahora-club.html">Dahora Club</a>
+            <div class="mobile-actions">
+              <a class="btn btn-secondary" href="#cadastro">Cadastrar</a>
+              <a class="btn btn-primary" href="area-cliente.html">Área do Cliente</a>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <main id="conteudo">
+        <section
+          class="store-carousel"
+          aria-roledescription="carousel"
+          aria-label="Imagens das lojas Dahora"
+          data-carousel
+        >
+          <div class="store-carousel-track">
+            <figure class="store-slide is-active">
+              <img
+                src="https://images.unsplash.com/photo-1578916171728-46686eac8d58?auto=format&fit=crop&w=2000&q=80"
+                alt="Corredor de atacado com carrinhos e prateleiras altas"
+                loading="eager"
+              />
+              <figcaption>Corredores amplos de atacado</figcaption>
+            </figure>
+            <figure class="store-slide">
+              <img
+                src="https://images.unsplash.com/photo-1604719312566-8912e9227c6a?auto=format&fit=crop&w=2000&q=80"
+                alt="Prateleiras de produtos em estoque de supermercado"
+                loading="lazy"
+              />
+              <figcaption>Estoque organizado para o seu negócio</figcaption>
+            </figure>
+            <figure class="store-slide">
+              <img
+                src="https://images.unsplash.com/photo-1534723452862-4c874018d66d?auto=format&fit=crop&w=2000&q=80"
+                alt="Pessoa escolhendo frutas e verduras frescas"
+                loading="lazy"
+              />
+              <figcaption>Clientes escolhendo com tranquilidade</figcaption>
+            </figure>
+            <figure class="store-slide">
+              <img
+                src="https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&w=2000&q=80"
+                alt="Corredor de supermercado com produtos frescos"
+                loading="lazy"
+              />
+              <figcaption>Experiência completa no varejo</figcaption>
+            </figure>
+            <figure class="store-slide">
+              <img
+                src="https://images.unsplash.com/photo-1550989460-0adf9ea622e2?auto=format&fit=crop&w=2000&q=80"
+                alt="Pessoas fazendo compras em supermercado"
+                loading="lazy"
+              />
+              <figcaption>Movimento real nas lojas Dahora</figcaption>
+            </figure>
+            <figure class="store-slide">
+              <img
+                src="https://images.unsplash.com/photo-1583258292688-d0213dc5a3a8?auto=format&fit=crop&w=2000&q=80"
+                alt="Interior de loja com produtos e clientes circulando"
+                loading="lazy"
+              />
+              <figcaption>Do atacado ao dia a dia</figcaption>
+            </figure>
+          </div>
+
+          <button class="carousel-nav carousel-prev" type="button" data-carousel-prev aria-label="Imagem anterior">‹</button>
+          <button class="carousel-nav carousel-next" type="button" data-carousel-next aria-label="Próxima imagem">›</button>
+          <div class="carousel-dots" data-carousel-dots></div>
+        </section>
+
+        <aside class="club-status-bar" aria-label="Dahora Club">
+          <div class="container club-status-bar__inner">
+            <div class="club-status-bar__items" role="list">
+              <a class="club-icon" href="dahora-club.html" role="listitem" title="Dahora Pontos">
+                <span class="club-icon__mark" aria-hidden="true">★</span>
+                <span class="club-icon__label">Dahora Pontos</span>
+              </a>
+              <a class="club-icon" href="dahora-club.html" role="listitem" title="Dahora Milhas">
+                <span class="club-icon__mark" aria-hidden="true">↗</span>
+                <span class="club-icon__label">Dahora Milhas</span>
+              </a>
+              <a class="club-icon" href="dahora-club.html" role="listitem" title="Dahora Ofertas">
+                <span class="club-icon__mark" aria-hidden="true">◇</span>
+                <span class="club-icon__label">Dahora Ofertas</span>
+              </a>
+            </div>
+          </div>
+        </aside>
+
+        <section class="section section-white" id="app-download" aria-labelledby="app-download-title">
+          <div class="container">
+            <div class="app-download">
+              <div class="app-download__copy">
+                <p class="eyebrow">App Dahora</p>
+                <h2 id="app-download-title">Baixe o app e leve a Dahora no bolso</h2>
+                <p class="muted mt-2" style="max-width: 36rem">
+                  Escaneie o QR Code com a câmera do celular ou baixe direto na
+                  Google Play e na App Store. Ofertas, Dahora Card e SAC 24h na palma da mão.
+                </p>
+                <div class="app-download__stores">
+                  <a
+                    class="app-download__badge"
+                    href="https://play.google.com/store/apps/details?id=br.com.dahora.app"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="Baixar na Google Play"
+                  >
+                    <svg viewBox="0 0 180 54" width="168" height="50" aria-hidden="true">
+                      <rect width="180" height="54" rx="8" fill="#000"/>
+                      <rect x="1" y="1" width="178" height="52" rx="7" fill="none" stroke="#a6a6a6"/>
+                      <path fill="#EA4335" d="M14 12.2 28.8 27 14 41.8V12.2Z"/>
+                      <path fill="#FBBC04" d="m14 41.8 7.8-4.5 7-10.3-14.8 14.8Z"/>
+                      <path fill="#4285F4" d="M36.4 22.6 32.2 25l-3.4 2 3.4 2 4.2 2.4L45 36.2c.7-.5 1.2-1.3 1.2-2.3V20c0-1-.5-1.8-1.2-2.3l-8.6 4.9Z"/>
+                      <path fill="#34A853" d="m14 12.2 14.8 14.8-7 10.3L14 12.2Z"/>
+                      <text x="54" y="20" fill="#fff" font-family="Arial, sans-serif" font-size="9">DISPONÍVEL NO</text>
+                      <text x="54" y="38" fill="#fff" font-family="Arial, sans-serif" font-size="16" font-weight="700">Google Play</text>
+                    </svg>
+                  </a>
+                  <a
+                    class="app-download__badge"
+                    href="https://apps.apple.com/app/dahora-atacadista/id000000000"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="Baixar na App Store"
+                  >
+                    <svg viewBox="0 0 180 54" width="168" height="50" aria-hidden="true">
+                      <rect width="180" height="54" rx="8" fill="#000"/>
+                      <rect x="1" y="1" width="178" height="52" rx="7" fill="none" stroke="#a6a6a6"/>
+                      <path fill="#fff" d="M28.2 18.2c1.1-1.3 1.8-3.1 1.6-4.9-1.6.1-3.5 1.1-4.6 2.4-1 1.2-1.9 3.1-1.6 4.9 1.8.1 3.5-1 4.6-2.4Zm4.5 8c-.1-3.1 2.5-4.6 2.6-4.7-1.4-2.1-3.7-2.4-4.5-2.4-1.9-.2-3.7 1.1-4.7 1.1s-2.5-1.1-4.1-1c-2.1.1-4.1 1.2-5.2 3.2-2.2 3.9-.6 9.6 1.6 12.7 1.1 1.5 2.4 3.2 4.1 3.2 1.6 0 2.2-1 4.2-1s2.5 1 4.2 1c1.7 0 2.9-1.6 3.9-3.1 1.2-1.8 1.7-3.5 1.7-3.6-.1 0-3.3-1.3-3.4-5.1-.1-1.9 1.4-3.2 1.6-3.3Z"/>
+                      <text x="54" y="20" fill="#fff" font-family="Arial, sans-serif" font-size="9">Baixar na</text>
+                      <text x="54" y="38" fill="#fff" font-family="Arial, sans-serif" font-size="16" font-weight="700">App Store</text>
+                    </svg>
+                  </a>
+                </div>
+              </div>
+              <figure class="app-download__qr">
+                <div class="app-download__qr-frame">
+                  <img
+                    data-app-qr
+                    src="https://api.qrserver.com/v1/create-qr-code/?size=220x220&amp;margin=0&amp;data=https%3A%2F%2Fplay.google.com%2Fstore%2Fapps%2Fdetails%3Fid%3Dbr.com.dahora.app"
+                    width="220"
+                    height="220"
+                    alt="QR Code para baixar o app Dahora na Google Play"
+                    loading="lazy"
+                  />
+                </div>
+                <figcaption>Aponte a câmera para abrir a Google Play</figcaption>
+              </figure>
+            </div>
+          </div>
+        </section>
+
+        <section class="section section-white" aria-label="Por que Dahora">
+          <div class="container">
+            <p class="eyebrow">Por que Dahora</p>
+            <h2>Uma experiência pensada para quem compra com estratégia</h2>
+            <p class="muted mt-2" style="max-width: 36rem">
+              Do corredor do supermercado ao volume do atacado: identidade clara,
+              navegação guiada e benefícios no dia a dia.
+            </p>
+
+            <div class="grid-4">
+              <article class="feature">
+                <div class="feature-icon" aria-hidden="true">◈</div>
+                <h3>Pontos em toda compra</h3>
+                <p>1 ponto por real no varejo e no atacado — troque por vantagens reais.</p>
+              </article>
+              <article class="feature">
+                <div class="feature-icon" aria-hidden="true">◇</div>
+                <h3>Ofertas exclusivas</h3>
+                <p>Preços de atacado e campanhas só para quem tem Dahora Card.</p>
+              </article>
+              <article class="feature">
+                <div class="feature-icon" aria-hidden="true">○</div>
+                <h3>Área do Cliente</h3>
+                <p>Saldo, cartão digital e histórico de atendimento em um só lugar.</p>
+              </article>
+              <article class="feature">
+                <div class="feature-icon" aria-hidden="true">△</div>
+                <h3>SAC 24 horas</h3>
+                <p>Suporte humano e digital a qualquer hora, com protocolo automático.</p>
+              </article>
+            </div>
+          </div>
+        </section>
+
+        <section class="section section-spotlight" aria-label="Dahora Card">
+          <div class="container">
+            <div class="spotlight">
+              <div class="spotlight-grid">
+                <div>
+                  <p class="eyebrow">Dahora Card</p>
+                  <h2>Seu cartão de vantagens, digital e na loja</h2>
+                  <p>
+                    Cadastre-se uma vez. Acompanhe pontos, abra chamados no SAC e tire
+                    dúvidas com a mesma conta — tudo responsivo.
+                  </p>
+                  <a class="btn btn-primary mt-3" href="#cadastro" style="background: #fff; color: var(--dahora-forest); box-shadow: none">
+                    Quero meu cartão
+                  </a>
+                </div>
+                <div class="card-visual" aria-hidden="true">
+                  <div class="top">
+                    <div>
+                      <div class="label">Dahora Card</div>
+                      <div class="title">Platinum</div>
+                    </div>
+                    <div class="chip">DH</div>
+                  </div>
+                  <div class="number">DH•••• •••• 4821</div>
+                  <div class="meta">
+                    <span>Cliente Dahora</span>
+                    <span>Pontos ativos</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="section" aria-label="Como funciona">
+          <div class="container">
+            <p class="eyebrow">Como funciona</p>
+            <h2>Três passos para uma boa experiência</h2>
+            <ol class="grid-3" style="list-style: none; padding: 0">
+              <li class="step">
+                <div class="step-num">01</div>
+                <h3>Cadastre-se</h3>
+                <p>Preencha o formulário completo do Dahora Card.</p>
+                <a href="#cadastro">Ir agora →</a>
+              </li>
+              <li class="step">
+                <div class="step-num">02</div>
+                <h3>Acesse sua área</h3>
+                <p>Entre com e-mail e senha para ver cartão e pontos.</p>
+                <a href="area-cliente.html">Ir agora →</a>
+              </li>
+              <li class="step">
+                <div class="step-num">03</div>
+                <h3>Compre e pontue</h3>
+                <p>Use o CPF nas lojas. Em dúvida, o SAC 24h está pronto.</p>
+                <a href="sac.html">Ir agora →</a>
+              </li>
+            </ol>
+          </div>
+        </section>
+
+        <section class="hero">
+          <div class="hero-bg" role="img" aria-label="Corredor de supermercado"></div>
+          <div class="container hero-content">
+            <p class="eyebrow">Rede de supermercados &amp; atacado</p>
+            <h1>Dahora</h1>
+            <p>Preço de verdade. Compra com inteligência.</p>
+            <div class="hero-actions">
+              <a class="btn btn-primary" href="#cadastro">Solicitar Dahora Card</a>
+              <a class="btn btn-ghost" href="area-cliente.html">Área do Cliente</a>
+            </div>
+          </div>
+        </section>
+
+
+
+        <section class="section" id="faq" aria-labelledby="faq-title">
+          <div class="container max-form">
+            <p class="eyebrow">Central de ajuda</p>
+            <h2 id="faq-title">FAQ Perguntas e Respostas</h2>
+            <p class="muted mt-2" style="max-width: 36rem; margin-bottom: 1.5rem">
+              Respostas claras sobre cartão, pontos, conta e atendimento.
+            </p>
+            <div class="faq-controls">
+              <label class="sr-only" for="faq-busca">Buscar</label>
+              <input
+                id="faq-busca"
+                class="field"
+                data-faq-search
+                placeholder="Buscar pergunta ou resposta…"
+                style="padding:0.85rem 1rem;border-radius:0.875rem;border:1.5px solid var(--dahora-line);width:100%;font:inherit"
+              />
+              <label class="sr-only" for="faq-cat">Categoria</label>
+              <select
+                id="faq-cat"
+                data-faq-filter
+                style="padding:0.85rem 1rem;border-radius:0.875rem;border:1.5px solid var(--dahora-line);width:100%;font:inherit;background:#fff"
+              ></select>
+            </div>
+            <div data-faq-list></div>
+            <div class="mt-4" style="display:flex;flex-wrap:wrap;gap:0.75rem">
+              <a class="btn btn-secondary" href="sac.html">Abrir chamado SAC</a>
+            </div>
+          </div>
+        </section>
+
+        <section class="section section-white" id="cadastro" aria-labelledby="home-cadastro-title">
+          <div class="container max-form">
+            <p class="eyebrow">Solicitação</p>
+            <h2 id="home-cadastro-title">Cadastro do Dahora Card</h2>
+            <p class="muted mt-2" style="max-width: 36rem; margin-bottom: 1.5rem">
+              Preencha o formulário completo. Os dados vão para o PostgreSQL e você
+              já recebe o número do cartão na Área do Cliente.
+            </p>
+
+            <div class="surface text-center" data-success-cadastro hidden>
+              <p style="font-size: 2rem; color: var(--dahora-forest)">✓</p>
+              <h2>Cadastro concluído, <span data-client-name></span>!</h2>
+              <p class="muted mt-2">Dados gravados no PostgreSQL. Número do cartão:</p>
+              <p class="mt-2" style="font-family: ui-monospace, monospace; font-size: 1.25rem; font-weight: 700; color: var(--dahora-forest)" data-card-number></p>
+              <a class="btn btn-primary mt-3" data-app-link="/area-cliente" href="area-cliente.html">Ir para Área do Cliente</a>
+            </div>
+
+            <form class="surface" data-form="cadastro" novalidate>
+              <p class="muted mb-2">
+                Campos com * são obrigatórios. A API Next.js grava na tabela <strong>Cliente</strong>.
+              </p>
+
+              <ol class="form-steps" aria-label="Etapas do cadastro">
+                <li><span>1.</span> Dados pessoais</li>
+                <li><span>2.</span> Endereço</li>
+                <li><span>3.</span> Acesso</li>
+              </ol>
+
+              <fieldset class="fieldset">
+                <legend>1. Dados pessoais</legend>
+                <div class="form-grid two">
+                  <div class="field full">
+                    <label for="nomeCompleto">Nome completo *</label>
+                    <input id="nomeCompleto" name="nomeCompleto" required autocomplete="name" />
+                    <p class="field-error" data-field-error="nomeCompleto" hidden></p>
+                  </div>
+                  <div class="field">
+                    <label for="nomeSocial">Nome social</label>
+                    <input id="nomeSocial" name="nomeSocial" />
+                    <p class="field-error" data-field-error="nomeSocial" hidden></p>
+                  </div>
+                  <div class="field">
+                    <label for="cpf">CPF *</label>
+                    <input id="cpf" name="cpf" data-mask="cpf" inputmode="numeric" placeholder="000.000.000-00" required />
+                    <p class="field-error" data-field-error="cpf" hidden></p>
+                  </div>
+                  <div class="field">
+                    <label for="rg">RG</label>
+                    <input id="rg" name="rg" />
+                    <p class="field-error" data-field-error="rg" hidden></p>
+                  </div>
+                  <div class="field">
+                    <label for="dataNascimento">Data de nascimento *</label>
+                    <input id="dataNascimento" name="dataNascimento" type="date" required />
+                    <p class="field-error" data-field-error="dataNascimento" hidden></p>
+                  </div>
+                  <div class="field">
+                    <label for="genero">Gênero</label>
+                    <select id="genero" name="genero">
+                      <option value="">Prefiro não informar agora</option>
+                      <option value="feminino">Feminino</option>
+                      <option value="masculino">Masculino</option>
+                      <option value="outro">Outro</option>
+                      <option value="prefiro_nao_informar">Prefiro não informar</option>
+                    </select>
+                  </div>
+                  <div class="field">
+                    <label for="estadoCivil">Estado civil</label>
+                    <select id="estadoCivil" name="estadoCivil">
+                      <option value="">—</option>
+                      <option value="solteiro">Solteiro(a)</option>
+                      <option value="casado">Casado(a)</option>
+                      <option value="uniao_estavel">União estável</option>
+                      <option value="divorciado">Divorciado(a)</option>
+                      <option value="viuvo">Viúvo(a)</option>
+                      <option value="outro">Outro</option>
+                    </select>
+                  </div>
+                  <div class="field">
+                    <label for="email">E-mail *</label>
+                    <input id="email" name="email" type="email" required autocomplete="email" />
+                    <p class="field-error" data-field-error="email" hidden></p>
+                  </div>
+                  <div class="field">
+                    <label for="telefone">Telefone / WhatsApp *</label>
+                    <input id="telefone" name="telefone" data-mask="phone" inputmode="tel" placeholder="(00) 00000-0000" required />
+                    <p class="field-error" data-field-error="telefone" hidden></p>
+                  </div>
+                  <div class="field">
+                    <label for="telefoneAlternativo">Telefone alternativo</label>
+                    <input id="telefoneAlternativo" name="telefoneAlternativo" data-mask="phone" inputmode="tel" placeholder="(00) 00000-0000" />
+                    <p class="field-error" data-field-error="telefoneAlternativo" hidden></p>
+                  </div>
+                  <div class="field">
+                    <label for="comoConheceu">Como conheceu a Dahora?</label>
+                    <select id="comoConheceu" name="comoConheceu">
+                      <option value="">—</option>
+                      <option value="loja">Loja física</option>
+                      <option value="indicacao">Indicação</option>
+                      <option value="redes_sociais">Redes sociais</option>
+                      <option value="google">Google</option>
+                      <option value="anuncio">Anúncio</option>
+                      <option value="outro">Outro</option>
+                    </select>
+                  </div>
+                </div>
+              </fieldset>
+
+              <fieldset class="fieldset">
+                <legend>2. Endereço</legend>
+                <div class="form-grid two">
+                  <div class="field">
+                    <label for="cep">CEP *</label>
+                    <input id="cep" name="cep" data-mask="cep" inputmode="numeric" placeholder="00000-000" required />
+                    <p class="field-error" data-field-error="cep" hidden></p>
+                  </div>
+                  <div class="field full">
+                    <label for="endereco">Endereço *</label>
+                    <input id="endereco" name="endereco" required autocomplete="street-address" />
+                    <p class="field-error" data-field-error="endereco" hidden></p>
+                  </div>
+                  <div class="field">
+                    <label for="numero">Número *</label>
+                    <input id="numero" name="numero" required />
+                    <p class="field-error" data-field-error="numero" hidden></p>
+                  </div>
+                  <div class="field">
+                    <label for="complemento">Complemento</label>
+                    <input id="complemento" name="complemento" placeholder="Apto, bloco, referência…" />
+                  </div>
+                  <div class="field">
+                    <label for="bairro">Bairro *</label>
+                    <input id="bairro" name="bairro" required />
+                    <p class="field-error" data-field-error="bairro" hidden></p>
+                  </div>
+                  <div class="field">
+                    <label for="cidade">Cidade *</label>
+                    <input id="cidade" name="cidade" required />
+                    <p class="field-error" data-field-error="cidade" hidden></p>
+                  </div>
+                  <div class="field">
+                    <label for="estado">UF *</label>
+                    <select id="estado" name="estado" required>
+                      <option value="">—</option>
+                      <option value="AC">AC</option><option value="AL">AL</option><option value="AP">AP</option>
+                      <option value="AM">AM</option><option value="BA">BA</option><option value="CE">CE</option>
+                      <option value="DF">DF</option><option value="ES">ES</option><option value="GO">GO</option>
+                      <option value="MA">MA</option><option value="MT">MT</option><option value="MS">MS</option>
+                      <option value="MG">MG</option><option value="PA">PA</option><option value="PB">PB</option>
+                      <option value="PR">PR</option><option value="PE">PE</option><option value="PI">PI</option>
+                      <option value="RJ">RJ</option><option value="RN">RN</option><option value="RS">RS</option>
+                      <option value="RO">RO</option><option value="RR">RR</option><option value="SC">SC</option>
+                      <option value="SP">SP</option><option value="SE">SE</option><option value="TO">TO</option>
+                    </select>
+                    <p class="field-error" data-field-error="estado" hidden></p>
+                  </div>
+                </div>
+              </fieldset>
+
+              <fieldset class="fieldset">
+                <legend>3. Acesso à Área do Cliente</legend>
+                <div class="form-grid two">
+                  <div class="field">
+                    <label for="senha">Senha * (mín. 6 caracteres)</label>
+                    <input id="senha" name="senha" type="password" minlength="6" required autocomplete="new-password" />
+                    <p class="field-error" data-field-error="senha" hidden></p>
+                  </div>
+                  <div class="field">
+                    <label for="confirmarSenha">Confirmar senha *</label>
+                    <input id="confirmarSenha" name="confirmarSenha" type="password" minlength="6" required autocomplete="new-password" />
+                    <p class="field-error" data-field-error="confirmarSenha" hidden></p>
+                  </div>
+                </div>
+              </fieldset>
+
+              <label class="check mb-2">
+                <input type="checkbox" name="aceiteTermos" required />
+                <span>Li e aceito o tratamento dos meus dados pessoais conforme a <a href="privacidade.html">Política de Privacidade</a> e a LGPD para emissão do Dahora Card. *</span>
+              </label>
+              <p class="field-error" data-field-error="aceiteTermos" hidden></p>
+              <label class="check mb-2">
+                <input type="checkbox" name="aceiteMarketing" />
+                <span>Quero receber ofertas e novidades da Dahora (opcional).</span>
+              </label>
+
+              <p class="alert alert-error" data-alert hidden></p>
+              <button class="btn btn-primary" type="submit">Concluir cadastro do Dahora Card</button>
+            </form>
+          </div>
+        </section>
+
+      </main>
+
+      <footer class="site-footer">
+        <div class="container footer-grid">
+          <div>
+            <a class="logo" href="index.html">
+              <span class="logo-mark">DH</span>
+              <span class="logo-text">
+                <strong>Dahora</strong>
+                <span>Atacadista</span>
+              </span>
+            </a>
+            <p class="mt-2">Preço de verdade. Compra com inteligência.</p>
+          </div>
+          <div>
+            <h2>Navegação</h2>
+            <ul>
+              <li><a href="index.html">Início</a></li>
+              <li><a href="dahora-card.html">Dahora Card</a></li>
+              <li><a href="dahora-club.html">Dahora Club</a></li>
+              <li><a href="#faq">FAQ</a></li>
+              <li><a href="sac.html">SAC 24h</a></li>
+              <li><a href="privacidade.html">Privacidade</a></li>
+              <li><a href="cookies.html">Cookies</a></li>
+            </ul>
+          </div>
+          <div>
+            <h2>Dahora Card</h2>
+            <ul>
+              <li><a href="#cadastro">Solicitar cartão</a></li>
+              <li><a href="area-cliente.html">Área do Cliente</a></li>
+              <li><a href="tire-sua-duvida.html">Tire sua dúvida</a></li>
+            </ul>
+          </div>
+          <div>
+            <h2>SAC 24 horas</h2>
+            <ul>
+              <li>0800 400 2024</li>
+              <li>sac@dahora.com.br</li>
+              <li>Atendimento 24 horas · todos os dias</li>
+            </ul>
+          </div>
+        </div>
+        <div class="container footer-bottom">
+          <p>© <span data-year></span> Dahora Atacadista. Todos os direitos reservados.</p>
+          <p>
+            <a href="privacidade.html">Política de Privacidade</a> ·
+            <a href="cookies.html">Cookies</a> ·
+            <button type="button" class="linkish" data-cookie-reset>Gerenciar cookies</button>
+          </p>
+        </div>
+      </footer>
+    </div>
+
+    <button
+      type="button"
+      class="back-to-top"
+      data-back-to-top
+      aria-label="Voltar ao topo"
+      title="Voltar ao topo"
+    >
+      <span class="back-to-top__icon" aria-hidden="true">↑</span>
+      <span class="back-to-top__label">Topo</span>
+    </button>
+
+    <script src="js/script.js?v=pwa-5510-1"></script>
+  </body>
+</html>

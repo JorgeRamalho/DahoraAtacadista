@@ -37,6 +37,24 @@ O workflow [`.github/workflows/deploy-pages.yml`](.github/workflows/deploy-pages
 
 Cadastro/login/SAC no Pages são só a interface — a API e o banco ficam no app Next (Vercel + Neon, por exemplo).
 
+### Vercel (app Next.js + PostgreSQL)
+
+1. Crie um banco **PostgreSQL** (Neon, Supabase ou Vercel Storage → Postgres) e copie a connection string.
+2. No projeto Vercel → **Settings → Environment Variables** (Production e Preview):
+   - `DATABASE_URL` — URL do Postgres (`?sslmode=require` se o provedor exigir SSL)
+   - `SESSION_SECRET` — string longa aleatória (32+ caracteres)
+   - `NEXT_PUBLIC_APP_URL` — ex.: `https://seu-projeto.vercel.app`
+3. Conecte o repositório GitHub; o `vercel.json` usa `npm run build:vercel` (migrations + build).
+4. Após o **primeiro** deploy com banco vazio, rode uma vez o seed (na sua máquina com a URL de produção no `.env`, ou no SQL do provedor):
+
+```bash
+npm run db:seed
+```
+
+5. Confira `/api/health` (`"database":"up"`) e a seção FAQ na home.
+
+A home usa `force-dynamic` para não exigir banco durante o `next build`; o runtime ainda precisa de `DATABASE_URL`.
+
 ### Netlify (estático)
 
 O arquivo `netlify.toml` aponta o publish para `frontend/` e desliga o plugin Next.js, para não tentar buildar a raiz.

@@ -1,22 +1,5 @@
-import dynamic from "next/dynamic";
+import { CadastroForm } from "@/components/card/CadastroForm";
 import { FloatAnnounceBanner } from "@/components/home/FloatAnnounceBanner";
-
-const CadastroForm = dynamic(
-  () =>
-    import("@/components/card/CadastroForm").then((mod) => ({
-      default: mod.CadastroForm,
-    })),
-  {
-    loading: () => (
-      <div
-        className="card-surface animate-pulse rounded-2xl p-8 text-center text-dahora-slate"
-        aria-busy="true"
-      >
-        Carregando formulário de cadastro…
-      </div>
-    ),
-  }
-);
 
 export function HomeCadastro() {
   return (

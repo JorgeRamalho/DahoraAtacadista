@@ -1,6 +1,5 @@
 import Link from "next/link";
 import { brand } from "@/lib/brand";
-import { HOME_HERO_IMAGE } from "@/lib/media/carousel-images";
 
 export function HomeHero() {
   return (
@@ -8,7 +7,8 @@ export function HomeHero() {
       <div
         className="bg-hero-photo absolute inset-0"
         style={{
-          backgroundImage: `url('${HOME_HERO_IMAGE}')`,
+          backgroundImage:
+            "url('https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&w=2000&q=80')",
         }}
         role="img"
         aria-label="Corredor de supermercado com produtos frescos e organizados"

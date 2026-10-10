@@ -1,4 +1,3 @@
-import Image from "next/image";
 import { brand } from "@/lib/brand";
 import { PwaInstallButton } from "@/components/pwa/PwaInstallButton";
 
@@ -48,6 +47,8 @@ function AppStoreBadge() {
 }
 
 export function HomeAppDownload() {
+  const qrSrc = `https://api.qrserver.com/v1/create-qr-code/?size=220x220&margin=0&data=${encodeURIComponent(PLAY_STORE_URL)}`;
+
   return (
     <section
       id="app-download"
@@ -108,8 +109,9 @@ export function HomeAppDownload() {
 
           <figure className="app-download__qr">
             <div className="app-download__qr-frame">
-              <Image
-                src="/images/play-store-qr.png"
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={qrSrc}
                 width={220}
                 height={220}
                 alt={`QR Code para baixar o app ${brand.name} na Google Play`}

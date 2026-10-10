@@ -1,5 +1,5 @@
 /* Dahora Atacadista PWA — service worker exclusivo (não usar /sw.js) */
-const CACHE = "dahora-atacadista-static-v2";
+const CACHE = "dahora-atacadista-static-v1";
 const OFFLINE_URL = "/offline.html";
 const MANIFEST_URL = "/manifest-dahora-atacadista.webmanifest";
 
@@ -59,11 +59,6 @@ self.addEventListener("fetch", (event) => {
   const url = new URL(request.url);
   if (url.origin !== self.location.origin) return;
   if (url.pathname.startsWith("/api/")) return;
-  // Nunca cachear bundles Next — evita site “pela metade” após novo deploy.
-  if (url.pathname.startsWith("/_next/")) {
-    event.respondWith(fetch(request));
-    return;
-  }
 
   if (request.mode === "navigate") {
     event.respondWith(
@@ -87,18 +82,17 @@ self.addEventListener("fetch", (event) => {
   }
 
   event.respondWith(
-    fetch(request)
-      .then((response) => {
-        if (response.ok && request.method === "GET") {
-          const copy = response.clone();
-          caches.open(CACHE).then((cache) => cache.put(request, copy));
-        }
-        return response;
-      })
-      .catch(async () => {
-        const cached = await caches.match(request);
-        if (cached) return cached;
-        throw new Error("offline");
-      })
+    caches.match(request).then((cached) => {
+      const fetching = fetch(request)
+        .then((response) => {
+          if (response.ok) {
+            const copy = response.clone();
+            caches.open(CACHE).then((cache) => cache.put(request, copy));
+          }
+          return response;
+        })
+        .catch(() => cached);
+      return cached || fetching;
+    })
   );
 });

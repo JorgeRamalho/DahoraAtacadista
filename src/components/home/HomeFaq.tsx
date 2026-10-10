@@ -1,19 +1,10 @@
 import Link from "next/link";
 import { FaqList } from "@/components/faq/FaqList";
-import { prisma } from "@/lib/db/prisma";
+import { getFaqItems } from "@/lib/faq/get-faq-items";
 
 /** FAQ embutido na home — espelha `#faq` do frontend/index.html */
 export async function HomeFaq() {
-  const items = await prisma.faq.findMany({
-    where: { ativo: true },
-    orderBy: [{ ordem: "asc" }, { createdAt: "asc" }],
-    select: {
-      id: true,
-      pergunta: true,
-      resposta: true,
-      categoria: true,
-    },
-  });
+  const items = await getFaqItems();
 
   return (
     <section

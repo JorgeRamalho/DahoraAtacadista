@@ -1,7 +1,8 @@
-import { readFileSync, writeFileSync, copyFileSync } from "node:fs";
+import { mkdirSync, readFileSync, writeFileSync, copyFileSync } from "node:fs";
 import { join, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 import sharp from "sharp";
+import QRCode from "qrcode";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const svgPath = join(root, "public/logo/dahora-mark.svg");
@@ -39,3 +40,15 @@ console.log("OK icon-maskable-512.png");
 
 copyFileSync(svgPath, join(root, "public/favicon.svg"));
 console.log("OK favicon.svg");
+
+const imagesDir = join(root, "public/images");
+mkdirSync(imagesDir, { recursive: true });
+const playStoreUrl =
+  process.env.NEXT_PUBLIC_PLAY_STORE_URL ||
+  "https://play.google.com/store/apps/details?id=br.com.dahora.app";
+await QRCode.toFile(join(imagesDir, "play-store-qr.png"), playStoreUrl, {
+  width: 440,
+  margin: 1,
+  errorCorrectionLevel: "M",
+});
+console.log("OK public/images/play-store-qr.png");

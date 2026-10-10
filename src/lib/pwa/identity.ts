@@ -12,7 +12,7 @@ export const PWA_START_URL = "/?app=dahora-atacadista";
 export const PWA_MANIFEST_PATH = "/manifest-dahora-atacadista.webmanifest";
 export const PWA_SW_PATH = "/sw-dahora-atacadista.js";
 export const PWA_CACHE_PREFIX = "dahora-atacadista-static-";
-export const PWA_CACHE_NAME = `${PWA_CACHE_PREFIX}v1`;
+export const PWA_CACHE_NAME = `${PWA_CACHE_PREFIX}v2`;
 
 /** Títulos/nomes de outros PWAs que já competiram no mesmo localhost. */
 export const FOREIGN_PWA_TITLE_RE =

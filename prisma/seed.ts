@@ -1,4 +1,7 @@
 import { PrismaClient } from "@prisma/client";
+import { loadEnv } from "../scripts/load-env.mjs";
+
+loadEnv();
 
 const prisma = new PrismaClient();
 

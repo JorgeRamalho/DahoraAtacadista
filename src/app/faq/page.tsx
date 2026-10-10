@@ -2,20 +2,15 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { PageHero } from "@/components/ui/PageHero";
 import { FaqList } from "@/components/faq/FaqList";
-import { prisma } from "@/lib/db/prisma";
+import { getFaqItems } from "@/lib/faq/get-faq-items";
 
 export const metadata: Metadata = {
   title: "FAQ",
   description: "Perguntas e respostas sobre Dahora Card, pontos, lojas e SAC.",
 };
 
-export const dynamic = "force-dynamic";
-
 export default async function FaqPage() {
-  const items = await prisma.faq.findMany({
-    where: { ativo: true },
-    orderBy: { ordem: "asc" },
-  });
+  const items = await getFaqItems();
 
   return (
     <>

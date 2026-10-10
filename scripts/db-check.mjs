@@ -2,6 +2,9 @@
  * Verifica se DATABASE_URL responde (PostgreSQL).
  */
 import { PrismaClient } from "@prisma/client";
+import { loadEnv } from "./load-env.mjs";
+
+loadEnv();
 
 const prisma = new PrismaClient();
 

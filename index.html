@@ -4,9 +4,27 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Dahora Atacadista</title>
-    <meta http-equiv="refresh" content="0; url=frontend/index.html" />
     <script>
-      location.replace("frontend/index.html" + location.search + location.hash);
+      (function () {
+        var q = location.search + location.hash;
+        var host = location.hostname;
+        var port = location.port;
+        var isLocal =
+          host === "localhost" ||
+          host === "127.0.0.1" ||
+          host === "[::1]" ||
+          location.protocol === "file:";
+        // App completo (Next.js + API): porta 3010
+        if (isLocal && port !== "3010") {
+          var nextUrl =
+            (location.protocol === "file:"
+              ? "http://127.0.0.1:3010/"
+              : location.protocol + "//" + host + ":3010/") + q.replace(/^\?/, "?");
+          location.replace(nextUrl);
+          return;
+        }
+        location.replace("frontend/index.html" + q);
+      })();
     </script>
   </head>
   <body>

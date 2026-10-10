@@ -1,42 +1,23 @@
 import { NextResponse } from "next/server";
-import { prisma } from "@/lib/db/prisma";
-
-export const dynamic = "force-dynamic";
+import { getFaqItems } from "@/lib/faq/get-faq-items";
 
 export async function GET(request: Request) {
-  try {
-    const { searchParams } = new URL(request.url);
-    const categoria = searchParams.get("categoria")?.trim();
-    const q = searchParams.get("q")?.trim();
+  const { searchParams } = new URL(request.url);
+  const categoria = searchParams.get("categoria")?.trim();
+  const q = searchParams.get("q")?.trim().toLowerCase();
 
-    const items = await prisma.faq.findMany({
-      where: {
-        ativo: true,
-        ...(categoria ? { categoria } : {}),
-        ...(q
-          ? {
-              OR: [
-                { pergunta: { contains: q, mode: "insensitive" } },
-                { resposta: { contains: q, mode: "insensitive" } },
-              ],
-            }
-          : {}),
-      },
-      orderBy: [{ ordem: "asc" }, { createdAt: "asc" }],
-      select: {
-        id: true,
-        pergunta: true,
-        resposta: true,
-        categoria: true,
-        ordem: true,
-      },
-    });
+  let items = await getFaqItems();
 
-    return NextResponse.json({ ok: true, total: items.length, items });
-  } catch {
-    return NextResponse.json(
-      { ok: false, message: "Não foi possível carregar o FAQ." },
-      { status: 500 }
+  if (categoria) {
+    items = items.filter((item) => item.categoria === categoria);
+  }
+  if (q) {
+    items = items.filter(
+      (item) =>
+        item.pergunta.toLowerCase().includes(q) ||
+        item.resposta.toLowerCase().includes(q)
     );
   }
+
+  return NextResponse.json({ ok: true, total: items.length, items });
 }

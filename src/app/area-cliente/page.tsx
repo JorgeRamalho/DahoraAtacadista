@@ -3,6 +3,7 @@ import { PageHero } from "@/components/ui/PageHero";
 import { LoginForm } from "@/components/cliente/LoginForm";
 import { ClienteDashboard } from "@/components/cliente/ClienteDashboard";
 import { getClienteLogado } from "@/lib/auth/session";
+import type { DashboardDuvida, DashboardTicket } from "@/lib/cliente/dashboard";
 import { prisma } from "@/lib/db/prisma";
 
 export const metadata: Metadata = {
@@ -33,31 +34,39 @@ export default async function AreaClientePage() {
     );
   }
 
-  const [tickets, duvidas] = await Promise.all([
-    prisma.ticket.findMany({
-      where: { clienteId: cliente.id },
-      orderBy: { createdAt: "desc" },
-      take: 8,
-      select: {
-        id: true,
-        protocolo: true,
-        assunto: true,
-        status: true,
-        createdAt: true,
-      },
-    }),
-    prisma.duvida.findMany({
-      where: { clienteId: cliente.id },
-      orderBy: { createdAt: "desc" },
-      take: 8,
-      select: {
-        id: true,
-        pergunta: true,
-        status: true,
-        createdAt: true,
-      },
-    }),
-  ]);
+  let tickets: DashboardTicket[] = [];
+  let duvidas: DashboardDuvida[] = [];
+
+  try {
+    [tickets, duvidas] = await Promise.all([
+      prisma.ticket.findMany({
+        where: { clienteId: cliente.id },
+        orderBy: { createdAt: "desc" },
+        take: 8,
+        select: {
+          id: true,
+          protocolo: true,
+          assunto: true,
+          status: true,
+          createdAt: true,
+        },
+      }),
+      prisma.duvida.findMany({
+        where: { clienteId: cliente.id },
+        orderBy: { createdAt: "desc" },
+        take: 8,
+        select: {
+          id: true,
+          pergunta: true,
+          status: true,
+          createdAt: true,
+        },
+      }),
+    ]);
+  } catch {
+    tickets = [];
+    duvidas = [];
+  }
 
   return (
     <ClienteDashboard

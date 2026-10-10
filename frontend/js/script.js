@@ -1143,7 +1143,12 @@ async function initDahoraPwa() {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-  void initDahoraPwa();
+  const runPwa = () => void initDahoraPwa();
+  if ("requestIdleCallback" in window) {
+    window.requestIdleCallback(runPwa, { timeout: 2500 });
+  } else {
+    window.setTimeout(runPwa, 400);
+  }
   initAppShell();
   initAppLinks();
   initMenu();

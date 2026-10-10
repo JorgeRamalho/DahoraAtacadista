@@ -10,9 +10,6 @@ import { HomeCadastro } from "@/components/home/HomeCadastro";
 import { brand } from "@/lib/brand";
 import type { Metadata } from "next";
 
-/** FAQ na home usa Prisma — não pré-renderizar no build (Vercel sem DB no build). */
-export const dynamic = "force-dynamic";
-
 export const metadata: Metadata = {
   title: {
     absolute: `${brand.fullName} — ${brand.slogan}`,

@@ -28,33 +28,41 @@ export async function getClienteLogado() {
   const id = await getSessionClienteId();
   if (!id) return null;
 
-  return prisma.cliente.findUnique({
-    where: { id },
-    select: {
-      id: true,
-      nomeCompleto: true,
-      nomeSocial: true,
-      email: true,
-      telefone: true,
-      telefoneAlternativo: true,
-      cpf: true,
-      rg: true,
-      dataNascimento: true,
-      genero: true,
-      estadoCivil: true,
-      cep: true,
-      endereco: true,
-      numero: true,
-      complemento: true,
-      bairro: true,
-      cidade: true,
-      estado: true,
-      comoConheceu: true,
-      numeroCartao: true,
-      pontos: true,
-      status: true,
-      aceiteMarketing: true,
-      createdAt: true,
-    },
-  });
+  if (!process.env.DATABASE_URL?.trim()) {
+    return null;
+  }
+
+  try {
+    return await prisma.cliente.findUnique({
+      where: { id },
+      select: {
+        id: true,
+        nomeCompleto: true,
+        nomeSocial: true,
+        email: true,
+        telefone: true,
+        telefoneAlternativo: true,
+        cpf: true,
+        rg: true,
+        dataNascimento: true,
+        genero: true,
+        estadoCivil: true,
+        cep: true,
+        endereco: true,
+        numero: true,
+        complemento: true,
+        bairro: true,
+        cidade: true,
+        estado: true,
+        comoConheceu: true,
+        numeroCartao: true,
+        pontos: true,
+        status: true,
+        aceiteMarketing: true,
+        createdAt: true,
+      },
+    });
+  } catch {
+    return null;
+  }
 }

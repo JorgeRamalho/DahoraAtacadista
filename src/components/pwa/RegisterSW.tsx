@@ -40,25 +40,9 @@ export function RegisterSW() {
       try {
         await purgeForeignWorkers();
 
-        const registration = await navigator.serviceWorker.register(PWA_SW_PATH, {
+        await navigator.serviceWorker.register(PWA_SW_PATH, {
           scope: "/",
           updateViaCache: "none",
-        });
-
-        await registration.update();
-
-        if (registration.waiting) {
-          registration.waiting.postMessage({ type: "SKIP_WAITING" });
-        }
-
-        registration.addEventListener("updatefound", () => {
-          const worker = registration.installing;
-          if (!worker) return;
-          worker.addEventListener("statechange", () => {
-            if (worker.state === "installed" && navigator.serviceWorker.controller) {
-              worker.postMessage({ type: "SKIP_WAITING" });
-            }
-          });
         });
       } catch (error) {
         console.warn("[PWA] Falha ao registrar service worker Dahora:", error);

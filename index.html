@@ -4,33 +4,40 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Dahora Atacadista</title>
+    <meta
+      name="description"
+      content="Redirecionando para o site oficial Dahora Atacadista (mesmo app da Vercel e da porta 3010)."
+    />
     <script>
       (function () {
         var q = location.search + location.hash;
         var host = location.hostname;
-        var port = location.port;
         var isLocal =
           host === "localhost" ||
           host === "127.0.0.1" ||
           host === "[::1]" ||
           location.protocol === "file:";
-        // App completo (Next.js + API): porta 3010
-        if (isLocal && port !== "3010") {
-          var nextUrl =
-            (location.protocol === "file:"
-              ? "http://127.0.0.1:3010/"
-              : location.protocol + "//" + host + ":3010/") + q.replace(/^\?/, "?");
-          location.replace(nextUrl);
+
+        if (isLocal) {
+          location.replace("http://127.0.0.1:3010/" + q);
           return;
         }
-        location.replace("frontend/index.html" + q);
+
+        if (host === "dahora-atacadista.vercel.app" || host.endsWith(".vercel.app")) {
+          location.replace("/" + q);
+          return;
+        }
+
+        location.replace("https://dahora-atacadista.vercel.app/" + q);
       })();
     </script>
   </head>
   <body>
     <p>
-      Abrindo
-      <a href="frontend/index.html">frontend/index.html</a>
+      Abrindo o site oficial
+      <a href="https://dahora-atacadista.vercel.app/">Dahora Atacadista</a>
+      (local:
+      <a href="http://127.0.0.1:3010/">http://127.0.0.1:3010/</a>).
     </p>
   </body>
 </html>

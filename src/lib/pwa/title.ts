@@ -18,29 +18,37 @@ export function forceDahoraTitle(current: string): string {
   return current.trim() || `${appName} — ${brand.slogan}`;
 }
 
+/** Aplica título/metas uma vez — sem MutationObserver (evita loop infinito e aba carregando). */
 export const dahoraTitleScript = `
 (function () {
   var APP = ${JSON.stringify(brand.fullName)};
   var SLOGAN = ${JSON.stringify(brand.slogan)};
   var FOREIGN = /carona|trampolim|app de corridas|impulso para o trampo|super eletrolar/i;
-  function fixTitle() {
-    var t = document.title || "";
+  var canonical = APP + " — " + SLOGAN;
+
+  function canonicalTitle(t) {
+    t = t || "";
     var i = t.indexOf(APP);
     if (i > 0 || FOREIGN.test(t)) {
-      document.title = i >= 0 ? t.slice(i).trim() : APP + " — " + SLOGAN;
+      return i >= 0 ? t.slice(i).trim() : canonical;
+    }
+    return t.trim() || canonical;
+  }
+
+  function applyOnce() {
+    var next = canonicalTitle(document.title);
+    if (document.title !== next) {
+      document.title = next;
     }
     ["application-name", "apple-mobile-web-app-title"].forEach(function (name) {
       var el = document.querySelector('meta[name="' + name + '"]');
-      if (el) el.setAttribute("content", APP);
+      if (el && el.getAttribute("content") !== APP) {
+        el.setAttribute("content", APP);
+      }
     });
   }
-  fixTitle();
-  var titleEl = document.querySelector("title");
-  var obs = new MutationObserver(fixTitle);
-  if (titleEl) {
-    obs.observe(titleEl, { childList: true, characterData: true, subtree: true });
-  } else {
-    obs.observe(document.head, { childList: true, subtree: true });
-  }
+
+  applyOnce();
+  document.addEventListener("DOMContentLoaded", applyOnce, { once: true });
 })();
 `.trim();

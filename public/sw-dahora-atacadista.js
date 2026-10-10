@@ -1,5 +1,5 @@
 /* Dahora Atacadista PWA — service worker exclusivo (não usar /sw.js) */
-const CACHE = "dahora-atacadista-static-v1";
+const CACHE = "dahora-atacadista-static-v3";
 const OFFLINE_URL = "/offline.html";
 const MANIFEST_URL = "/manifest-dahora-atacadista.webmanifest";
 
@@ -52,13 +52,24 @@ self.addEventListener("activate", (event) => {
   );
 });
 
+function shouldBypassCache(pathname) {
+  return (
+    pathname.startsWith("/api/") ||
+    pathname.startsWith("/_next/") ||
+    pathname.startsWith("/__nextjs")
+  );
+}
+
 self.addEventListener("fetch", (event) => {
   const { request } = event;
   if (request.method !== "GET") return;
 
   const url = new URL(request.url);
   if (url.origin !== self.location.origin) return;
-  if (url.pathname.startsWith("/api/")) return;
+  if (shouldBypassCache(url.pathname)) {
+    event.respondWith(fetch(request));
+    return;
+  }
 
   if (request.mode === "navigate") {
     event.respondWith(
@@ -82,17 +93,18 @@ self.addEventListener("fetch", (event) => {
   }
 
   event.respondWith(
-    caches.match(request).then((cached) => {
-      const fetching = fetch(request)
-        .then((response) => {
-          if (response.ok) {
-            const copy = response.clone();
-            caches.open(CACHE).then((cache) => cache.put(request, copy));
-          }
-          return response;
-        })
-        .catch(() => cached);
-      return cached || fetching;
-    })
+    fetch(request)
+      .then((response) => {
+        if (response.ok) {
+          const copy = response.clone();
+          caches.open(CACHE).then((cache) => cache.put(request, copy));
+        }
+        return response;
+      })
+      .catch(async () => {
+        const cached = await caches.match(request);
+        if (cached) return cached;
+        return Response.error();
+      })
   );
 });

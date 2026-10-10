@@ -52,6 +52,19 @@ export function HomeCarousel() {
     return () => window.clearInterval(id);
   }, [paused]);
 
+  useEffect(() => {
+    const next = slides[(index + 1) % slides.length];
+    if (!next) return;
+    const link = document.createElement("link");
+    link.rel = "preload";
+    link.as = "image";
+    link.href = next.src;
+    document.head.appendChild(link);
+    return () => {
+      link.remove();
+    };
+  }, [index]);
+
   return (
     <section
       className="relative overflow-hidden bg-dahora-ink"
@@ -86,13 +99,22 @@ export function HomeCarousel() {
             }`}
             aria-hidden={i !== index}
           >
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src={slide.src}
-              alt={slide.alt}
-              className="h-full w-full object-cover"
-              loading={i === 0 ? "eager" : "lazy"}
-            />
+            {i === index ? (
+              /* eslint-disable-next-line @next/next/no-img-element */
+              <img
+                src={slide.src}
+                alt={slide.alt}
+                className="h-full w-full object-cover"
+                loading="eager"
+                decoding="async"
+                fetchPriority="high"
+              />
+            ) : (
+              <div
+                className="h-full w-full bg-dahora-ink"
+                aria-hidden="true"
+              />
+            )}
             <div className="absolute inset-0 bg-gradient-to-t from-[#1c1210]/75 via-[#1c1210]/20 to-transparent" />
             <figcaption className="absolute bottom-5 left-0 right-0 px-4 text-center md:bottom-8">
               <span className="inline-block rounded-full bg-black/35 px-4 py-2 text-sm font-medium text-white backdrop-blur-md md:text-base">
